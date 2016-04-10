@@ -1,0 +1,110 @@
+#include <stdlib.h>
+#include <string>
+#include <pthread.h>
+#include <iostream>
+#include <cstdlib>
+#include <unistd.h>
+#include <fstream>
+#include <dirent.h>
+
+using namespace std;
+
+string sparkPath = "/Users/lilinzhe/Documents/spark-1.6.1/";
+string monitorPath = "/Users/lilinzhe/Desktop/netowrk_monitor/src/";
+string recordPath = "/Users/lilinzhe/Desktop/netowrk_monitor/record/";
+
+// /Users/lilinzhe/Documents/spark-1.6.1/bin/spark-submit /Users/lilinzhe/Desktop/netowrk_monitor/src/network_monitor.py localhost 9999
+
+
+/*
+void *runSpark(void* threadid){
+    cout << sparkPath << endl;
+    string startSpark = sparkPath + "bin/spark-submit " + monitorPath + "network_monitor.py localhost 9999";
+    
+    system(startSpark.c_str());
+}
+*/
+
+void parseRecord(void) {
+    auto dir = opendir(recordPath.c_str());
+    if(dir == NULL) {
+        std::cout << "could not open directory: " << recordPath.c_str() << std::endl;
+        return;
+    }
+    auto entity = readdir(dir);
+    
+    while (entity != NULL) {
+        cout << "Outer -> " << entity->d_name << endl;
+        
+        if (entity->d_type == DT_DIR && entity->d_name[0] != '.') {
+            string subPath = recordPath + entity->d_name + "/";
+            cout << "subPath = " << subPath << endl;
+            auto subDir = opendir(subPath.c_str());
+            if(subDir == NULL) {
+                std::cout << "could not open directory: " << subPath.c_str() << std::endl;
+                return;
+            }
+            auto subEntity = readdir(subDir);
+            
+            while (subEntity != NULL) {
+                cout << "Inner -> " << subEntity->d_name << endl;
+                
+                if (subEntity->d_type == DT_REG && subEntity->d_name[0] != '.' && subEntity->d_name[0] != '_') {
+                    string filePath = subPath + subEntity->d_name;
+                    cout << filePath << endl;
+                    
+                    ifstream fp;
+                    fp.open(filePath);
+                    string line;
+                    while (getline(fp, line)) {
+                        cout << line << endl;
+                    }
+                    fp.close();
+                    
+                }
+                subEntity = readdir(subDir);
+            }
+            
+            string rmRecordedFolder = "rm -rf " + subPath;
+            system(rmRecordedFolder.c_str());
+        }
+        
+        cout << endl;
+        entity = readdir(dir);
+        
+    }
+    
+}
+
+
+int main(){
+    /*
+    pthread_t sparkThread;
+    int rc = pthread_create(&sparkThread, NULL, runSpark, NULL);
+    if (rc) {
+        cout << "Error:unable to create thread," << rc << endl;
+        exit(-1);
+    }
+    sleep(2);
+    */
+    
+    //parseRecord();
+    //sleep(1);
+
+
+    while (true) {
+        system("sh script.sh > pingInfor.log");
+        
+        sleep(1);
+        
+        system("cat pingInfor.log | nc -l 9999");
+    
+        sleep(8);
+        
+        parseRecord();
+    }
+
+    string rmPingInformationLog = "rm pingInfor.log";
+    system(rmPingInformationLog.c_str());
+ 
+}
