@@ -24,6 +24,7 @@ void *runSpark(void* threadid){
     system(startSpark.c_str());
 }
 */
+int pingResIdx = 0;
 
 void parseRecord(void) {
     auto dir = opendir(recordPath.c_str());
@@ -58,6 +59,7 @@ void parseRecord(void) {
                     string line;
                     while (getline(fp, line)) {
                         cout << line << endl;
+                        
                     }
                     fp.close();
                     
