@@ -6,6 +6,8 @@
 #include <unistd.h>
 #include <fstream>
 #include <dirent.h>
+#include <map>
+#include <vector>
 
 using namespace std;
 
@@ -24,7 +26,6 @@ void *runSpark(void* threadid){
     system(startSpark.c_str());
 }
 */
-int pingResIdx = 0;
 
 void parseRecord(void) {
     auto dir = opendir(recordPath.c_str());
@@ -32,6 +33,9 @@ void parseRecord(void) {
         std::cout << "could not open directory: " << recordPath.c_str() << std::endl;
         return;
     }
+    
+    map<string, vector<string>> IPtoRTT;
+    
     auto entity = readdir(dir);
     
     while (entity != NULL) {
@@ -60,6 +64,22 @@ void parseRecord(void) {
                     while (getline(fp, line)) {
                         cout << line << endl;
                         
+                        int i = 0;
+                        int j = 0;
+                        while (line[j] != '@') j++;
+                        string IP = line.substr(i, j-i);
+                        
+                        i = j + 1;
+                        j = j + 1;
+                        while (line[j] != '@') j++;
+                        string TTL = line.substr(i, j-i);
+                        
+                        i = j + 1;
+                        j = j + 1;
+                        while (line[j] != '@') j++;
+                        string RTT = line.substr(i, j-i);
+                        
+                        IPtoRTT[IP].push_back(RTT);
                     }
                     fp.close();
                     
@@ -73,9 +93,24 @@ void parseRecord(void) {
         
         cout << endl;
         entity = readdir(dir);
-        
     }
     
+    ofstream fp;
+    fp.open("rttInfo.json");
+    
+    for (auto e : IPtoRTT) {
+        string output = "{\"" + e.first + "\":[";
+        
+        for (auto eachRTT : e.second)
+            output += "{\"RTT\":\"" + eachRTT + "\"},";
+        
+        if(output.back() == ',' ) output.pop_back();
+        output += "]}";
+        
+        fp << output << endl;
+    }
+    
+    fp.close();
 }
 
 
