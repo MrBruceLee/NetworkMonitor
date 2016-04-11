@@ -34,17 +34,21 @@ int main(){
         ofstream fp;
         fp.open("rttInfo.json");
         
+        fp << "rttData =" << endl << "[" << endl;
+        
         for (auto e : IPtoRTT) {
-            string output = "{\"" + e.first + "\":[";
+            string perIP = "{\"IP\":\"" + e.first + "\",\"RTT\":[";
             
             for (auto eachRTT : e.second)
-            output += "{\"RTT\":\"" + eachRTT + "\"},";
+                perIP += "\"" + eachRTT + "\",";
             
-            if(output.back() == ',' ) output.pop_back();
-            output += "]}";
+            if(perIP.back() == ',' ) perIP.pop_back();
+            perIP += "]},";
             
-            fp << output << endl;
+            fp << perIP << endl;
         }
+        
+        fp << "];";
         
         fp.close();
         
