@@ -32,7 +32,7 @@ int main(){
         }
         
         ofstream fp;
-        fp.open("rttInfo.json");
+        fp.open("info.json");
         
         fp << "rttData =" << endl << "[" << endl;
         
