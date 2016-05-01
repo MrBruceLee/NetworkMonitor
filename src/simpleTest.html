@@ -112,40 +112,41 @@
 			}			
 			],
 			axisX: {
-				title: "chart updates every 5 secs"
+				title: "chart updates every 1 secs"
 			},
 		});	
 		
-		var updateInterval = 5000;
-		//var rttInterval = 1000;
-		// initial value
-		var countRTT = 5;
+        // initial value
+        var yValue1 = 0;
+        var yValue2 = 0;
+        var yValue3 = 0;
+        var yValue4 = 0;
+        var yValue5 = 0;
+		var updateInterval = 1000;
+		//var countRTT = 1;
 		var dataLength = 100; // number of dataPoints visible at any point
-		
-		var yValue1; 
-		var yValue2;
-		var yValue3;
-		var yValue4;
-		var yValue5;
+        
+        var idx = 0;
 		
 		//document.getElementById("p1").innerHTML = time.getTime();
 		
-		var updateChart = function (countRTT) {
-			countRTT = countRTT || 5;  // if countRTT not mentioned, then use the latter value 
-			// countRTT is number of times loop runs to get IP dataPoints.		
+		var updateChart = function (count) {
+			count = count || 1;  // if count not mentioned, then use the latter value
+			// count is number of times loop runs to get IP dataPoints.
             
 			var time = new Date;
 			// rollback the timeInterval
-			time.setTime(time.getTime() - (countRTT - 1) * updateInterval);
-			
-			for (var j = 0; j < countRTT; j++) {	
+			time.setTime(time.getTime() - count * updateInterval);
+            idx++;
+
+			for (var j = 0; j < count; j++) {
 				
 				// set the RTT time 
-				yValue1 = Number(rttData[0]["RTT"][j]);
-				yValue2 = Number(rttData[1]["RTT"][j]);
-				yValue3 = Number(rttData[2]["RTT"][j]);
-				yValue4 = Number(rttData[3]["RTT"][j]);
-				yValue5 = Number(rttData[4]["RTT"][j]);
+				yValue1 = Number(rttData[0]["RTT"][j+idx]);
+				yValue2 = Number(rttData[1]["RTT"][j+idx]);
+				yValue3 = Number(rttData[2]["RTT"][j+idx]);
+				yValue4 = Number(rttData[3]["RTT"][j+idx]);
+				yValue5 = Number(rttData[4]["RTT"][j+idx]);
 				
 				//alert("yValue1 is" + yValue1.toString() );
 				//alert("yValue2 is" + yValue2.toString() );
@@ -173,30 +174,30 @@
 				});
 				
 				// add interval duration to time				
-				time.setTime(time.getTime()+ updateInterval);
+				time.setTime(time.getTime() + updateInterval);
 							
 			};
 			
-				if (dataPoints1.length > dataLength)
+            if (dataPoints1.length > dataLength)
 			{
-				while (dataPoints1.length > dataLength)
-			{
+            //while (dataPoints1.length > dataLength)
+			//{
 				dataPoints1.shift();	
 				dataPoints2.shift();	
 				dataPoints3.shift();
 				dataPoints4.shift();
 				dataPoints5.shift();
-			}
+			//}
 			}
 
 			chart.render();
 		};
 			
-			// generates first set of dataPoints 
-			updateChart();	
+        // generates first set of dataPoints
+        updateChart(dataLength);
 			
-			// update chart after specified interval 
-			setInterval(function(){updateChart()}, updateInterval);
+        // update chart after specified interval
+        setInterval(function(){updateChart()}, updateInterval);
 	};
 	</script>
 	<div id="chartContainer" style="height: 350px; width:100%;">
