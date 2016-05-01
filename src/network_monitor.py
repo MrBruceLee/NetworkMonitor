@@ -38,14 +38,27 @@ if __name__ == "__main__":
     IP_RTT_Average = IP_RTT_Record.mapValues(lambda x: (x, 1)) \
                                   .reduceByKey(lambda x, y: (x[0] + y[0], x[1] + y[1])) \
                                   .mapValues(lambda x: x[0] / x[1])
+
+
     IP_RTT_Deviation = IP_RTT_Record.join(IP_RTT_Average) \
                                     .mapValues(lambda x: ((x[0] - x[1])**2, 1))\
                                     .reduceByKey(lambda x, y: (x[0] + y[0], x[1] + y[1])) \
                                     .mapValues(lambda x: (x[0] / x[1])**(0.5))
 
-    IP_RTT_Deviation.pprint();
-    
+    IP_RTT_Deviation.pprint()
+
+    IP_RTT_LargerCnt = IP_RTT_Record.join(IP_RTT_Average) \
+                                    .mapValues(lambda x: (x[0] - x[1])) \
+                                    .filter(lambda x: x[1] > 5) \
+                                    .mapValues(lambda x: 1) \
+                                    .reduceByKey(lambda x, y: x + y)
+                                               
+    IP_RTT_LargerCnt.pprint()
+
     #IP_RTT_Record.saveAsTextFiles("/Users/lilinzhe/Desktop/netowrk_monitor/record/Ping");
+
+
+
             
     def parseIPtoTTL(s):
         idxStart = s.find("from ") + 5
@@ -76,6 +89,7 @@ if __name__ == "__main__":
 
 
 
+
     def parseIPtoSeq(s):
         idxStart = s.find("from ") + 5
         idxEnd = idxStart
@@ -100,7 +114,8 @@ if __name__ == "__main__":
     IP_Seq_LossRate.pprint()
 
 
-    
+
+
 
 
     def parseInformation(s):
@@ -127,6 +142,36 @@ if __name__ == "__main__":
     #mappedInformation = records.map(parseInformation)
     #mappedInformation.saveAsTextFiles("/Users/lilinzhe/Desktop/netowrk_monitor/record/Ping");
     #mappedInformation.pprint()
+
+
+
+
+
     
+    recordsTraceRoute = lines.filter(lambda line: "  " in line)
+    recordsTraceRoute.pprint()
+    
+    def parseTraceRouteInformation(s):
+        idxStart = s.find(" (") + 2
+        idxEnd = idxStart
+        while s[idxEnd] != ')':
+            idxEnd += 1
+        IP = s[idxStart:idxEnd]
+
+        idxStart = s.find(")  ") + 3
+        #idxEnd = idxStart
+        #while idxEnd != ' ':
+        #    idxEnd += 1
+        #RTT = s[idxStart:idxEnd]
+        
+        #return (IP, float(RTT))
+        return (IP, float(s[idxStart:idxStart+5]))
+
+    TraceRoute_record = recordsTraceRoute.map(parseTraceRouteInformation)
+    TraceRoute_record.pprint()
+
+
+
+
     ssc.start()
     ssc.awaitTermination()
