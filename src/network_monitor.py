@@ -13,11 +13,14 @@ if __name__ == "__main__":
         exit(-1)
 
     sc = SparkContext(appName="NetworkMonitor")
-    ssc = StreamingContext(sc, 7)
+    ssc = StreamingContext(sc, 5)
         
     lines = ssc.socketTextStream(sys.argv[1], int(sys.argv[2]))
 
-    records = lines.filter(lambda line: "icmp_seq=" in line)
+
+
+
+    recordsPing = lines.filter(lambda line: "icmp_seq=" in line)
 
     def parseIPtoRTT(s):
         idxStart = s.find("from ") + 5
@@ -33,29 +36,27 @@ if __name__ == "__main__":
         RTT = s[idxStart:idxEnd]
             
         return (IP, float(RTT))
-            
-    IP_RTT_Record = records.map(parseIPtoRTT)
-    IP_RTT_Average = IP_RTT_Record.mapValues(lambda x: (x, 1)) \
-                                  .reduceByKey(lambda x, y: (x[0] + y[0], x[1] + y[1])) \
-                                  .mapValues(lambda x: x[0] / x[1])
 
+    IP_RTT_Record = recordsPing.map(parseIPtoRTT).map(lambda x: ("PING_RTT", x))
+    #IP_RTT_Record.saveAsTextFiles("/Users/lilinzhe/Desktop/netowrk_monitor/record")
+    IP_RTT_Record.pprint()
 
-    IP_RTT_Deviation = IP_RTT_Record.join(IP_RTT_Average) \
-                                    .mapValues(lambda x: ((x[0] - x[1])**2, 1))\
-                                    .reduceByKey(lambda x, y: (x[0] + y[0], x[1] + y[1])) \
-                                    .mapValues(lambda x: (x[0] / x[1])**(0.5))
+    IP_RTT_Record_Windowed = recordsPing.window(60, 5) \
+                                        .map(parseIPtoRTT)
+    IP_RTT_Average = IP_RTT_Record_Windowed.mapValues(lambda x: (x, 1)) \
+                                           .reduceByKey(lambda x, y: (x[0] + y[0], x[1] + y[1])) \
+                                           .mapValues(lambda x: x[0] / x[1])
 
+    IP_RTT_Deviation = IP_RTT_Record_Windowed.join(IP_RTT_Average) \
+                                             .mapValues(lambda x: ((x[0] - x[1])**2, 1))\
+                                             .reduceByKey(lambda x, y: (x[0] + y[0], x[1] + y[1])) \
+                                             .mapValues(lambda x: (x[0] / x[1])**(0.5)) \
+                                             .map(lambda x: ("PING_RTT_Deviation", x))
+    #IP_RTT_Deviation.saveAsTextFiles("/Users/lilinzhe/Desktop/netowrk_monitor/record")
     IP_RTT_Deviation.pprint()
 
-    IP_RTT_LargerCnt = IP_RTT_Record.join(IP_RTT_Average) \
-                                    .mapValues(lambda x: (x[0] - x[1])) \
-                                    .filter(lambda x: x[1] > 5) \
-                                    .mapValues(lambda x: 1) \
-                                    .reduceByKey(lambda x, y: x + y)
-                                               
-    IP_RTT_LargerCnt.pprint()
 
-    #IP_RTT_Record.saveAsTextFiles("/Users/lilinzhe/Desktop/netowrk_monitor/record/Ping");
+
 
 
 
@@ -75,73 +76,54 @@ if __name__ == "__main__":
     
         return (IP, float(TTL))
     
-    IP_TTL_Record = records.map(parseIPtoTTL)
-    IP_TTL_Average = IP_TTL_Record.mapValues(lambda x: (x, 1)) \
-                                  .reduceByKey(lambda x, y: (x[0] + y[0], x[1] + y[1])) \
-                                  .mapValues(lambda x: x[0] / x[1])
-    IP_TTL_Deviation = IP_TTL_Record.join(IP_TTL_Average) \
-                                    .mapValues(lambda x: ((x[0] - x[1])**2, 1))\
-                                    .reduceByKey(lambda x, y: (x[0] + y[0], x[1] + y[1])) \
-                                    .mapValues(lambda x: (x[0] / x[1])**(0.5))
+    IP_TTL_Record = recordsPing.map(parseIPtoTTL).map(lambda x: ("PING_TTL", x))
+    #IP_TTL_Record.saveAsTextFiles("/Users/lilinzhe/Desktop/netowrk_monitor/record");
+    IP_TTL_Record.pprint()
 
+    IP_TTL_Record_Windowed = recordsPing.window(60, 5) \
+                                        .map(parseIPtoTTL)
+    IP_TTL_Average = IP_TTL_Record_Windowed.mapValues(lambda x: (x, 1)) \
+                                           .reduceByKey(lambda x, y: (x[0] + y[0], x[1] + y[1])) \
+                                           .mapValues(lambda x: x[0] / x[1])
+    IP_TTL_Deviation = IP_TTL_Record_Windowed.join(IP_TTL_Average) \
+                                             .mapValues(lambda x: ((x[0] - x[1])**2, 1)) \
+                                             .reduceByKey(lambda x, y: (x[0] + y[0], x[1] + y[1])) \
+                                             .mapValues(lambda x: (x[0] / x[1])**(0.5)) \
+                                             .map(lambda x: ("PING_TTL_Deviation", x))
+    #IP_TTL_Deviation.saveAsTextFiles("/Users/lilinzhe/Desktop/netowrk_monitor/record");
     IP_TTL_Deviation.pprint();
 
 
 
 
+    def parseIPSent(s):
+        idxStart = s.find("(") + 1
+        idxEnd = s.find(")")
+        return (s[idxStart:idxEnd], 1)
 
-    def parseIPtoSeq(s):
+    IP_Sent = lines.filter(lambda line: "PING" in line) \
+                        .window(60, 5) \
+                        .map(parseIPSent) \
+                        .reduceByKey(lambda x, y: x + y)
+    #IP_Sent.map(lambda x : ("sent", x)).pprint()
+
+
+    def parseIPRecieved(s):
         idxStart = s.find("from ") + 5
-        idxEnd = idxStart
-        while s[idxEnd] != ':':
-            idxEnd += 1
-        IP = s[idxStart:idxEnd]
-        
-        idxStart = s.find("icmp_seq=") + 9
-        idxEnd = idxStart
-        while s[idxEnd] != ' ':
-            idxEnd += 1
-        Seq = s[idxStart:idxEnd]
-    
-        return (IP, float(Seq))
-            
-    IP_Seq_Record = records.map(parseIPtoSeq)
-    IP_Seq_Count = IP_Seq_Record.mapValues(lambda x: 1) \
-                                .reduceByKey(lambda x, y: x + y)
-    IP_Seq_Max = IP_Seq_Record.reduceByKey(lambda x, y: max(x, y))
-    IP_Seq_LossRate = IP_Seq_Max.join(IP_Seq_Count) \
-                                .mapValues(lambda x: int((x[0] - x[1] + 1) / x[0] * 100))
-    IP_Seq_LossRate.pprint()
+        idxEnd = s.find(":")
 
+        return (s[idxStart:idxEnd], 1)
 
+    IP_Recieved = recordsPing.window(60, 5) \
+                             .map(parseIPRecieved) \
+                             .reduceByKey(lambda x, y: x + y)
+    #IP_Recieved.map(lambda x : ("recieved", x)).pprint()
 
-
-
-
-    def parseInformation(s):
-        idxStart = s.find("from ") + 5
-        idxEnd = idxStart
-        while s[idxEnd] != ':':
-            idxEnd += 1
-        IP = s[idxStart:idxEnd]
-            
-        idxStart = s.find("ttl=") + 4
-        idxEnd = idxStart
-        while s[idxEnd] != ' ':
-            idxEnd += 1
-        TTL = s[idxStart:idxEnd]
-            
-        idxStart = s.find("time=") + 5
-        idxEnd = idxStart
-        while s[idxEnd] != ' ':
-            idxEnd += 1
-        RTT = s[idxStart:idxEnd]
-
-        return IP + '@' + TTL + '@' + RTT + '@'
-
-    #mappedInformation = records.map(parseInformation)
-    #mappedInformation.saveAsTextFiles("/Users/lilinzhe/Desktop/netowrk_monitor/record/Ping");
-    #mappedInformation.pprint()
+    IP_LossRate = IP_Sent.join(IP_Recieved) \
+                         .mapValues(lambda x: (x[0] - x[1]) * 100 / x[0]) \
+                         .map(lambda x: ("PING_LOSSRATE", x))
+    #IP_LossRate.saveAsTextFiles("/Users/lilinzhe/Desktop/netowrk_monitor/record");
+    IP_LossRate.pprint()
 
 
 
@@ -149,7 +131,6 @@ if __name__ == "__main__":
 
     
     recordsTraceRoute = lines.filter(lambda line: "  " in line)
-    recordsTraceRoute.pprint()
     
     def parseTraceRouteInformation(s):
         idxStart = s.find(" (") + 2
@@ -159,15 +140,12 @@ if __name__ == "__main__":
         IP = s[idxStart:idxEnd]
 
         idxStart = s.find(")  ") + 3
-        #idxEnd = idxStart
-        #while idxEnd != ' ':
-        #    idxEnd += 1
-        #RTT = s[idxStart:idxEnd]
-        
-        #return (IP, float(RTT))
+
         return (IP, float(s[idxStart:idxStart+5]))
 
-    TraceRoute_record = recordsTraceRoute.map(parseTraceRouteInformation)
+    TraceRoute_record = recordsTraceRoute.map(parseTraceRouteInformation) \
+                                         .map(lambda x: ("TRACEROUTE_RTT", x))
+    #TraceRoute_record.saveAsTextFiles("/Users/lilinzhe/Desktop/netowrk_monitor/record");
     TraceRoute_record.pprint()
 
 

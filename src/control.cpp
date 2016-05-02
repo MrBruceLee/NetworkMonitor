@@ -94,6 +94,8 @@ void parseRecord(void) {
         cout << endl;
         entity = readdir(dir);
     }
+    
+    
     ofstream fp;
     fp.open("info.json");
     
@@ -127,24 +129,21 @@ int main(){
     }
     sleep(2);
     */
-    
-    //parseRecord();
-    //sleep(1);
 
 
     while (true) {
-        system("sh script.sh > pingInfor.log");
+        //system("sh script.sh > pingInfor.log");
         
-        sleep(1);
+        //sleep(1);
         
-        system("cat pingInfor.log | nc -l 9999");
+        //system("cat pingInfor.log | nc -l 9999");
     
-        sleep(8);
+        //sleep(8);
         
         parseRecord();
     }
 
-    string rmPingInformationLog = "rm pingInfor.log";
-    system(rmPingInformationLog.c_str());
+    //string rmPingInformationLog = "rm pingInfor.log";
+    //system(rmPingInformationLog.c_str());
  
 }

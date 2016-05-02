@@ -50,7 +50,7 @@
 		var dataPoints4 = [];
 		var dataPoints5 = [];
 
-		var chart = new CanvasJS.Chart("chartContainer",{
+		var chart1 = new CanvasJS.Chart("chartContainer1",{
 			theme: "theme3",
 			title :{
 				text: "Live IP RTT Data"
@@ -58,15 +58,15 @@
             legend: {
                 cursor: "pointer",
                 itemclick: function (e) {
-                //console.log("legend click: " + e.dataPointIndex);
-                //console.log(e);
-                if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-                     e.dataSeries.visible = false;
-                } else {
-                     e.dataSeries.visible = true;
-                }
+                    //console.log("legend click: " + e.dataPointIndex);
+                    //console.log(e);
+                    if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                        e.dataSeries.visible = false;
+                    } else {
+                        e.dataSeries.visible = true;
+                    }
            
-                e.chart.render();
+                    e.chart.render();
                 }
             },                           
 			data: [
@@ -114,7 +114,8 @@
 			axisX: {
 				title: "chart updates every 1 secs"
 			},
-		});	
+		});
+
 		
         // initial value
         var yValue1 = 0;
@@ -130,7 +131,7 @@
 		
 		//document.getElementById("p1").innerHTML = time.getTime();
 		
-		var updateChart = function (count) {
+		var updateChart1 = function (count) {
 			count = count || 1;  // if count not mentioned, then use the latter value
 			// count is number of times loop runs to get IP dataPoints.
             
@@ -180,27 +181,184 @@
 			
             if (dataPoints1.length > dataLength)
 			{
-            //while (dataPoints1.length > dataLength)
-			//{
 				dataPoints1.shift();	
 				dataPoints2.shift();	
 				dataPoints3.shift();
 				dataPoints4.shift();
 				dataPoints5.shift();
-			//}
 			}
 
-			chart.render();
+			chart1.render();
 		};
 			
         // generates first set of dataPoints
-        updateChart();
+        updateChart1();
 			
         // update chart after specified interval
-        setInterval(function(){updateChart()}, updateInterval);
+        setInterval(function(){updateChart1()}, updateInterval);
+        
+        
+        
+        
+        
+        
+        var dataPoints1 = [];
+        var dataPoints2 = [];
+        var dataPoints3 = [];
+        var dataPoints4 = [];
+        var dataPoints5 = [];
+        
+        var chart1 = new CanvasJS.Chart("chartContainer1",{
+        theme: "theme3",
+            title :{
+            text: "Live IP RTT Data"
+            },
+        legend: {
+        cursor: "pointer",
+        itemclick: function (e) {
+            //console.log("legend click: " + e.dataPointIndex);
+            //console.log(e);
+            if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                e.dataSeries.visible = false;
+            } else {
+                e.dataSeries.visible = true;
+            }
+            
+            e.chart.render();
+        }
+        },
+        data: [
+               {
+               // dataSeries1
+               type: "line",
+               xValueType: "dateTime",
+               showInLegend: true,
+               name: "IP1( " + rttData[0]["IP"] + " )",
+               dataPoints: dataPoints1
+               },
+               {
+               // dataSeries2
+               type: "line",
+               xValueType: "dateTime",
+               showInLegend: true,
+               name: "IP2( " + rttData[1]["IP"] + " )",
+               dataPoints: dataPoints2
+               },
+               {
+               // dataSeries3
+               type: "line",
+               xValueType: "dateTime",
+               showInLegend: true,
+               name: "IP3( " + rttData[2]["IP"] + " )",
+               dataPoints: dataPoints3
+               },
+               {
+               // dataSeries4
+               type: "line",
+               xValueType: "dateTime",
+               showInLegend: true,
+               name: "IP4( " + rttData[3]["IP"] + " )",
+               dataPoints: dataPoints4
+               },
+               {
+               // dataSeries5
+               type: "line",
+               xValueType: "dateTime",
+               showInLegend: true,
+               name: "IP5( " + rttData[4]["IP"] + " )",
+               dataPoints: dataPoints5
+               }
+               ],
+        axisX: {
+        title: "chart updates every 1 secs"
+        },
+        });
+        
+        
+        // initial value
+        var yValue1 = 0;
+        var yValue2 = 0;
+        var yValue3 = 0;
+        var yValue4 = 0;
+        var yValue5 = 0;
+        var updateInterval = 1000;
+        //var countRTT = 1;
+        var dataLength = 100; // number of dataPoints visible at any point
+        
+        var idx = 0;
+        
+        //document.getElementById("p1").innerHTML = time.getTime();
+        
+        var updateChart1 = function (count) {
+            count = count || 1;  // if count not mentioned, then use the latter value
+            // count is number of times loop runs to get IP dataPoints.
+            
+            var time = new Date;
+            // rollback the timeInterval
+            time.setTime(time.getTime() - count * updateInterval);
+            idx++;
+            
+            for (var j = 0; j < count; j++) {
+                
+                // set the RTT time
+                yValue1 = Number(rttData[0]["RTT"][j+idx]);
+                yValue2 = Number(rttData[1]["RTT"][j+idx]);
+                yValue3 = Number(rttData[2]["RTT"][j+idx]);
+                yValue4 = Number(rttData[3]["RTT"][j+idx]);
+                yValue5 = Number(rttData[4]["RTT"][j+idx]);
+                
+                //alert("yValue1 is" + yValue1.toString() );
+                //alert("yValue2 is" + yValue2.toString() );
+                
+                // pushing the new values
+                dataPoints1.push({
+                x: time.getTime(),
+                y: yValue1
+                });
+                dataPoints2.push({
+                x: time.getTime(),
+                y: yValue2
+                });
+                dataPoints3.push({
+                x: time.getTime(),
+                y: yValue3
+                });
+                dataPoints4.push({
+                x: time.getTime(),
+                y: yValue4
+                });
+                dataPoints5.push({
+                x: time.getTime(),
+                y: yValue5
+                });
+                
+                // add interval duration to time				
+                time.setTime(time.getTime() + updateInterval);
+                
+            };
+            
+            if (dataPoints1.length > dataLength)
+            {
+                dataPoints1.shift();	
+                dataPoints2.shift();	
+                dataPoints3.shift();
+                dataPoints4.shift();
+                dataPoints5.shift();
+            }
+            
+            chart1.render();
+        };
+        
+        // generates first set of dataPoints
+        updateChart1();
+        
+        // update chart after specified interval
+        setInterval(function(){updateChart1()}, updateInterval);
+        
+
 	};
 	</script>
-	<div id="chartContainer" style="height: 350px; width:100%;">
-	</div>
+	<div id="chartContainer1" style="height: 350px; width:100%;"></div>
+    <div id="chartContainer2" style="height: 350px; width:100%;"></div>
 </body>
 </html>
