@@ -1,167 +1,30 @@
-PING star-mini.c10r.facebook.com (31.13.74.36): 56 data bytes
-Request timeout for icmp_seq 0
+PING 216.58.192.142 (216.58.192.142): 56 data bytes
+64 bytes from 216.58.192.142: icmp_seq=0 ttl=54 time=25.083 ms
 
---- star-mini.c10r.facebook.com ping statistics ---
+--- 216.58.192.142 ping statistics ---
 1 packets transmitted, 1 packets received, 0.0% packet loss
-round-trip min/avg/max/stddev = 7.667/7.667/7.667/0.000 ms
- 1  itap-wifipe-vlan1315.tcom.purdue.edu (10.186.112.1)  2.794 ms
- 2  lamb-netedgepe-vlan3015.tcom.purdue.edu (172.28.160.197)  1.566 ms
- 3  lamb-netedgepe-vlan3014.tcom.purdue.edu (172.28.160.195)  2.907 ms
- 4  freh-g2-c9006-01-be10.tcom.purdue.edu (192.5.40.10)  2.820 ms
- 5  indiana-gigapop-ctc-internet-151.tcom.purdue.edu (192.5.40.82)  3.881 ms
- 6  indiana-gigapop-ctc-internet-151.tcom.purdue.edu (192.5.40.82)  3.897 ms
- 7  149.165.183.90 (149.165.183.90)  8.306 ms
- 8  205.213.119.42 (205.213.119.42)  8.115 ms
- 9  msw1au.01.ord1.tfbnw.net (204.15.23.19)  8.368 ms
-10  edge-star-mini-shv-01-ord1.facebook.com (31.13.74.36)  8.084 ms
-PING star-mini.c10r.facebook.com (31.13.74.36): 56 data bytes
-64 bytes from 31.13.74.36: icmp_seq=0 ttl=87 time=7.851 ms
+round-trip min/avg/max/stddev = 25.083/25.083/25.083/0.000 ms
+PING 31.13.74.36 (31.13.74.36): 56 data bytes
+64 bytes from 31.13.74.36: icmp_seq=0 ttl=87 time=16.344 ms
 
---- star-mini.c10r.facebook.com ping statistics ---
+--- 31.13.74.36 ping statistics ---
 1 packets transmitted, 1 packets received, 0.0% packet loss
-round-trip min/avg/max/stddev = 7.851/7.851/7.851/0.000 ms
- 1  itap-wifipe-vlan1315.tcom.purdue.edu (10.186.112.1)  9.770 ms
- 2  lamb-netedgepe-vlan3015.tcom.purdue.edu (172.28.160.197)  48.449 ms
- 3  lamb-netedgepe-vlan3014.tcom.purdue.edu (172.28.160.195)  34.255 ms
- 4  freh-g2-c9006-01-be10.tcom.purdue.edu (192.5.40.10)  2.618 ms
- 5  indiana-gigapop-ctc-internet-151.tcom.purdue.edu (192.5.40.82)  3.359 ms
- 6  indiana-gigapop-ctc-internet-151.tcom.purdue.edu (192.5.40.82)  3.127 ms
- 7  149.165.183.90 (149.165.183.90)  8.419 ms
- 8  205.213.119.42 (205.213.119.42)  8.048 ms
- 9  msw1ar.01.ord1.tfbnw.net (204.15.22.63)  8.434 ms
-10  edge-star-mini-shv-01-ord1.facebook.com (31.13.74.36)  8.254 ms
-PING star-mini.c10r.facebook.com (31.13.74.36): 56 data bytes
-64 bytes from 31.13.74.36: icmp_seq=0 ttl=87 time=10.335 ms
+round-trip min/avg/max/stddev = 16.344/16.344/16.344/0.000 ms
+PING 198.41.208.143 (198.41.208.143): 56 data bytes
+64 bytes from 198.41.208.143: icmp_seq=0 ttl=57 time=47.756 ms
 
---- star-mini.c10r.facebook.com ping statistics ---
+--- 198.41.208.143 ping statistics ---
 1 packets transmitted, 1 packets received, 0.0% packet loss
-round-trip min/avg/max/stddev = 10.335/10.335/10.335/0.000 ms
- 1  itap-wifipe-vlan1315.tcom.purdue.edu (10.186.112.1)  14.296 ms
- 2  lamb-netedgepe-vlan3015.tcom.purdue.edu (172.28.160.197)  1.481 ms
- 3  lamb-netedgepe-vlan3014.tcom.purdue.edu (172.28.160.195)  1.819 ms
- 4  freh-g2-c9006-01-be10.tcom.purdue.edu (192.5.40.10)  2.488 ms
- 5  indiana-gigapop-ctc-internet-151.tcom.purdue.edu (192.5.40.82)  14.889 ms
- 6  indiana-gigapop-ctc-internet-151.tcom.purdue.edu (192.5.40.82)  3.312 ms
- 7  149.165.183.90 (149.165.183.90)  8.971 ms
- 8  ge-0-1-0-414.rtr.kans.net.internet2.edu (205.213.119.26)  9.323 ms
- 9  msw1aq.01.ord1.tfbnw.net (204.15.22.4)  10.183 ms
-10  edge-star-mini-shv-01-ord1.facebook.com (31.13.74.36)  8.087 ms
-PING star-mini.c10r.facebook.com (31.13.74.36): 56 data bytes
-64 bytes from 31.13.74.36: icmp_seq=0 ttl=87 time=8.074 ms
+round-trip min/avg/max/stddev = 47.756/47.756/47.756/0.000 ms
+PING 216.58.192.129 (216.58.192.129): 56 data bytes
+64 bytes from 216.58.192.129: icmp_seq=0 ttl=54 time=27.584 ms
 
---- star-mini.c10r.facebook.com ping statistics ---
+--- 216.58.192.129 ping statistics ---
 1 packets transmitted, 1 packets received, 0.0% packet loss
-round-trip min/avg/max/stddev = 8.074/8.074/8.074/0.000 ms
- 1  itap-wifipe-vlan1315.tcom.purdue.edu (10.186.112.1)  5.910 ms
- 2  tel-netedgepe-vlan3015.tcom.purdue.edu (172.28.160.196)  2.149 ms
- 3  tel-netedgepe-vlan3014.tcom.purdue.edu (172.28.160.194)  2.791 ms
- 4  192.5.40.8 (192.5.40.8)  6.097 ms
- 5  tel-210-c9006-01-te0-0-0-3.tcom.purdue.edu (192.5.40.65)  7.865 ms
- 6  149.165.183.90 (149.165.183.90)  7.697 ms
- 7  205.213.119.42 (205.213.119.42)  8.030 ms
- 8  psw01c.ord1.tfbnw.net (74.119.76.37)  9.533 ms
- 9  psw01d.ord1.tfbnw.net (74.119.76.38)  8.683 ms
-10  msw1at.01.ord1.tfbnw.net (204.15.23.20)  9.640 ms
-11  edge-star-mini-shv-01-ord1.facebook.com (31.13.74.36)  10.540 ms
-PING star-mini.c10r.facebook.com (31.13.74.36): 56 data bytes
-64 bytes from 31.13.74.36: icmp_seq=0 ttl=87 time=7.945 ms
+round-trip min/avg/max/stddev = 27.584/27.584/27.584/0.000 ms
+PING 104.31.72.239 (104.31.72.239): 56 data bytes
+64 bytes from 104.31.72.239: icmp_seq=0 ttl=54 time=39.932 ms
 
---- star-mini.c10r.facebook.com ping statistics ---
+--- 104.31.72.239 ping statistics ---
 1 packets transmitted, 1 packets received, 0.0% packet loss
-round-trip min/avg/max/stddev = 7.945/7.945/7.945/0.000 ms
- 1  itap-wifipe-vlan1315.tcom.purdue.edu (10.186.112.1)  2.821 ms
- 2  tel-netedgepe-vlan3015.tcom.purdue.edu (172.28.160.196)  2.189 ms
- 3  tel-netedgepe-vlan3014.tcom.purdue.edu (172.28.160.194)  14.443 ms
- 4  192.5.40.8 (192.5.40.8)  4.179 ms
- 5  tel-210-c9006-01-te0-0-0-3.tcom.purdue.edu (192.5.40.65)  4.493 ms
- 6  149.165.183.90 (149.165.183.90)  8.801 ms
- 7  ge-0-1-0-414.rtr.kans.net.internet2.edu (205.213.119.26)  10.313 ms
- 8  psw01b.ord1.tfbnw.net (204.15.22.89)  10.372 ms
- 9  psw01b.ord1.tfbnw.net (204.15.22.89)  8.912 ms
-10  msw1av.01.ord1.tfbnw.net (204.15.23.18)  8.608 ms
-11  edge-star-mini-shv-01-ord1.facebook.com (31.13.74.36)  8.321 ms
-PING star-mini.c10r.facebook.com (31.13.74.36): 56 data bytes
-64 bytes from 31.13.74.36: icmp_seq=0 ttl=87 time=7.907 ms
-
---- star-mini.c10r.facebook.com ping statistics ---
-1 packets transmitted, 1 packets received, 0.0% packet loss
-round-trip min/avg/max/stddev = 7.907/7.907/7.907/0.000 ms
- 1  itap-wifipe-vlan1315.tcom.purdue.edu (10.186.112.1)  4.302 ms
- 2  tel-netedgepe-vlan3015.tcom.purdue.edu (172.28.160.196)  1.514 ms
- 3  tel-netedgepe-vlan3014.tcom.purdue.edu (172.28.160.194)  2.104 ms
- 4  192.5.40.8 (192.5.40.8)  4.586 ms
- 5  tel-210-c9006-01-te0-0-0-3.tcom.purdue.edu (192.5.40.65)  4.127 ms
- 6  149.165.183.90 (149.165.183.90)  7.918 ms
- 7  ge-0-1-0-414.rtr.kans.net.internet2.edu (205.213.119.26)  7.946 ms
- 8  psw01d.ord1.tfbnw.net (74.119.76.38)  11.738 ms
- 9  psw01b.ord1.tfbnw.net (204.15.22.89)  9.628 ms
-10  msw1at.01.ord1.tfbnw.net (204.15.23.20)  9.004 ms
-11  edge-star-mini-shv-01-ord1.facebook.com (31.13.74.36)  7.938 ms
-PING star-mini.c10r.facebook.com (31.13.74.36): 56 data bytes
-64 bytes from 31.13.74.36: icmp_seq=0 ttl=87 time=9.430 ms
-
---- star-mini.c10r.facebook.com ping statistics ---
-1 packets transmitted, 1 packets received, 0.0% packet loss
-round-trip min/avg/max/stddev = 9.430/9.430/9.430/0.000 ms
- 1  itap-wifipe-vlan1315.tcom.purdue.edu (10.186.112.1)  5.982 ms
- 2  tel-netedgepe-vlan3015.tcom.purdue.edu (172.28.160.196)  85.880 ms
- 3  tel-netedgepe-vlan3014.tcom.purdue.edu (172.28.160.194)  20.808 ms
- 4  192.5.40.8 (192.5.40.8)  2.915 ms
- 5  tel-210-c9006-01-te0-0-0-3.tcom.purdue.edu (192.5.40.65)  5.820 ms
- 6  149.165.183.90 (149.165.183.90)  9.948 ms
- 7  205.213.119.42 (205.213.119.42)  11.852 ms
- 8  psw01a.ord1.tfbnw.net (31.13.30.8)  8.367 ms
- 9  psw01d.ord1.tfbnw.net (74.119.76.38)  15.778 ms
-10  msw1ap.01.ord1.tfbnw.net (204.15.22.62)  19.095 ms
-11  edge-star-mini-shv-01-ord1.facebook.com (31.13.74.36)  18.407 ms
-PING star-mini.c10r.facebook.com (31.13.74.36): 56 data bytes
-64 bytes from 31.13.74.36: icmp_seq=0 ttl=87 time=11.482 ms
-
---- star-mini.c10r.facebook.com ping statistics ---
-1 packets transmitted, 1 packets received, 0.0% packet loss
-round-trip min/avg/max/stddev = 11.482/11.482/11.482/0.000 ms
- 1  itap-wifipe-vlan1315.tcom.purdue.edu (10.186.112.1)  13.084 ms
- 2  tel-netedgepe-vlan3015.tcom.purdue.edu (172.28.160.196)  11.915 ms
- 3  lamb-netedgepe-vlan3014.tcom.purdue.edu (172.28.160.195)  20.411 ms
- 4  freh-g2-c9006-01-be10.tcom.purdue.edu (192.5.40.10)  3.346 ms
- 5  tel-210-c9006-01-te0-0-0-3.tcom.purdue.edu (192.5.40.65)  7.860 ms
- 6  149.165.183.90 (149.165.183.90)  11.142 ms
- 7  149.165.183.90 (149.165.183.90)  9.437 ms
- 8  205.213.119.42 (205.213.119.42)  10.911 ms
- 9  psw01d.ord1.tfbnw.net (74.119.76.38)  10.094 ms
-10  msw1at.01.ord1.tfbnw.net (204.15.23.20)  10.238 ms
-11  edge-star-mini-shv-01-ord1.facebook.com (31.13.74.36)  9.225 ms
-PING star-mini.c10r.facebook.com (31.13.74.36): 56 data bytes
-64 bytes from 31.13.74.36: icmp_seq=0 ttl=87 time=12.048 ms
-
---- star-mini.c10r.facebook.com ping statistics ---
-1 packets transmitted, 1 packets received, 0.0% packet loss
-round-trip min/avg/max/stddev = 12.048/12.048/12.048/0.000 ms
- 1  itap-wifipe-vlan1315.tcom.purdue.edu (10.186.112.1)  4.506 ms
- 2  tel-netedgepe-vlan3015.tcom.purdue.edu (172.28.160.196)  8.959 ms
- 3  lamb-netedgepe-vlan3014.tcom.purdue.edu (172.28.160.195)  9.641 ms
- 4  freh-g2-c9006-01-be10.tcom.purdue.edu (192.5.40.10)  14.763 ms
- 5  tel-210-c9006-01-te0-0-0-3.tcom.purdue.edu (192.5.40.65)  9.362 ms
- 6  149.165.183.90 (149.165.183.90)  16.361 ms
- 7  149.165.183.90 (149.165.183.90)  62.279 ms
- 8  ge-0-1-0-414.rtr.kans.net.internet2.edu (205.213.119.26)  27.746 ms
- 9  psw01d.ord1.tfbnw.net (74.119.76.38)  13.971 ms
-10  msw1aq.01.ord1.tfbnw.net (204.15.22.4)  15.735 ms
-11  edge-star-mini-shv-01-ord1.facebook.com (31.13.74.36)  8.352 ms
-PING star-mini.c10r.facebook.com (31.13.74.36): 56 data bytes
-64 bytes from 31.13.74.36: icmp_seq=0 ttl=87 time=9.455 ms
-
---- star-mini.c10r.facebook.com ping statistics ---
-1 packets transmitted, 1 packets received, 0.0% packet loss
-round-trip min/avg/max/stddev = 9.455/9.455/9.455/0.000 ms
- 1  itap-wifipe-vlan1315.tcom.purdue.edu (10.186.112.1)  3.686 ms
- 2  tel-netedgepe-vlan3015.tcom.purdue.edu (172.28.160.196)  2.546 ms
- 3  lamb-netedgepe-vlan3014.tcom.purdue.edu (172.28.160.195)  20.241 ms
- 4  freh-g2-c9006-01-be10.tcom.purdue.edu (192.5.40.10)  9.180 ms
- 5  tel-210-c9006-01-te0-0-0-3.tcom.purdue.edu (192.5.40.65)  10.999 ms
- 6  149.165.183.90 (149.165.183.90)  12.382 ms
- 7  149.165.183.90 (149.165.183.90)  8.195 ms
- 8  ge-0-1-0-414.rtr.kans.net.internet2.edu (205.213.119.26)  20.369 ms
- 9  psw01c.ord1.tfbnw.net (74.119.76.37)  24.689 ms
-10  msw1aq.01.ord1.tfbnw.net (204.15.22.4)  33.425 ms
-11  edge-star-mini-shv-01-ord1.facebook.com (31.13.74.36)  24.602 ms
+round-trip min/avg/max/stddev = 39.932/39.932/39.932/0.000 ms

@@ -1,4 +1,11 @@
 #!/bin/bash
 
-ping -c 1 -i 0.1 www.facebook.com
-traceroute -q 1 www.facebook.com
+ping -c 1 -i 0.1 216.58.192.142
+
+ping -c 1 -i 0.1 31.13.74.36
+
+ping -c 1 -i 0.1 198.41.208.143
+
+ping -c 1 -i 0.1 216.58.192.129
+
+ping -c 1 -i 0.1 104.31.72.239

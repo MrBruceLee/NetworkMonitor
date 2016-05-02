@@ -132,13 +132,6 @@ int main(){
 
 
     while (true) {
-        //system("sh script.sh > pingInfor.log");
-        
-        //sleep(1);
-        
-        //system("cat pingInfor.log | nc -l 9999");
-    
-        //sleep(8);
         
         parseRecord();
     }
