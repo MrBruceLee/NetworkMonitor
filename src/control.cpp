@@ -27,59 +27,129 @@ void *runSpark(void* threadid){
 }
 */
 
+map<string, vector<string>> IPtoRTT;
+map<string, vector<string>> IPtoTTL;
+map<string, vector<string>> IPtoLOSSRATE;
+
+vector<string> TTL_Deviation;
+
+map<string, vector<string>> TRtoRTT;
+
+
+void storeData(string& line){
+    //cout << line << endl;
+    
+    if(line.size() < 4) return; // filter out invalued statement
+    
+    int i = 2;
+    while (line[i] != '\'') i++;
+    int len = i - 2;
+    string type = line.substr(2, len);
+    
+    //cout << "type = " << type << endl;
+    
+    size_t start = line.find("k:") + 2;
+    size_t end = line.find(".k");
+    string key = line.substr(start, end - start);
+    
+    start = line.find("v:") + 2;
+    end = line.find(".v");
+    string value = line.substr(start, end - start);
+    
+    if (type == "PING_RTT"){
+        //cout << key << ", " << value;
+        IPtoRTT[key].push_back(value);
+        
+        if(IPtoRTT[key].size() > 500){
+            IPtoRTT[key].erase(IPtoRTT[key].begin());
+        }
+        
+    }else if (type == "PING_RTT_Deviation"){
+        
+        
+    }else if (type == "PING_TTL"){
+        //cout << key << ", " << value;
+        IPtoTTL[key].push_back(value);
+        
+        if(IPtoTTL[key].size() > 500){
+            IPtoTTL[key].erase(IPtoTTL[key].begin());
+        }
+        
+    }else if (type == "PING_TTL_Deviation"){
+        //cout << key << ", " << value;
+        if (value > 1) {
+            TTL_Deviation.push_back(key);
+        }
+        
+    }else if (type == "PING_LOSSRATE"){
+        //cout << key << ", " << value;
+        IPtoLOSSRATE[key].push_back(value);
+        
+        if(IPtoLOSSRATE[key].size() > 500){
+            IPtoLOSSRATE[key].erase(IPtoLOSSRATE[key].begin());
+        }
+        
+    }
+}
+
+
 void parseRecord(void) {
+    
+    TTL_Deviation.resize(0);
+    
     auto dir = opendir(recordPath.c_str());
     if(dir == NULL) {
+        #ifdef logging
         std::cout << "could not open directory: " << recordPath.c_str() << std::endl;
+        #endif
         return;
     }
-    
-    map<string, vector<string>> IPtoRTT;
     
     auto entity = readdir(dir);
     
     while (entity != NULL) {
-        cout << "Outer -> " << entity->d_name << endl;
+        
+        #ifdef logging
+        cout << "Outer-> " << entity->d_name << endl;
+        #endif
         
         if (entity->d_type == DT_DIR && entity->d_name[0] != '.') {
             string subPath = recordPath + entity->d_name + "/";
+            
+            #ifdef logging
             cout << "subPath = " << subPath << endl;
+            #endif
+
             auto subDir = opendir(subPath.c_str());
             if(subDir == NULL) {
+                #ifdef logging
                 std::cout << "could not open directory: " << subPath.c_str() << std::endl;
+                #endif
                 return;
             }
+            
             auto subEntity = readdir(subDir);
             
             while (subEntity != NULL) {
+                
+                #ifdef logging
                 cout << "Inner -> " << subEntity->d_name << endl;
+                #endif
                 
                 if (subEntity->d_type == DT_REG && subEntity->d_name[0] != '.' && subEntity->d_name[0] != '_') {
                     string filePath = subPath + subEntity->d_name;
+                    
+                    #ifdef logging
                     cout << filePath << endl;
+                    #endif
                     
                     ifstream fp;
                     fp.open(filePath);
                     string line;
                     while (getline(fp, line)) {
-                        cout << line << endl;
                         
-                        int i = 0;
-                        int j = 0;
-                        while (line[j] != '@') j++;
-                        string IP = line.substr(i, j-i);
-                        
-                        i = j + 1;
-                        j = j + 1;
-                        while (line[j] != '@') j++;
-                        string TTL = line.substr(i, j-i);
-                        
-                        i = j + 1;
-                        j = j + 1;
-                        while (line[j] != '@') j++;
-                        string RTT = line.substr(i, j-i);
-                        
-                        IPtoRTT[IP].push_back(RTT);
+                        //cout << line << endl;
+                        storeData(line);
                     }
                     fp.close();
                     
@@ -96,6 +166,7 @@ void parseRecord(void) {
     }
     
     
+/*
     ofstream fp;
     fp.open("info.json");
     
@@ -106,6 +177,28 @@ void parseRecord(void) {
         
         for (auto eachRTT : e.second)
             perIP += "\"" + eachRTT + "\",";
+        
+        if(perIP.back() == ',' ) perIP.pop_back();
+        perIP += "]},";
+        
+        fp << perIP << endl;
+    }
+    
+    fp << "];";
+    
+    fp.close();
+*/
+    
+    ofstream fp;
+    fp.open("info.json");
+    
+    fp << "rttData =" << endl << "[" << endl;
+    
+    for (auto e : IPtoRTT) {
+        string perIP = "{\"IP\":\"" + e.first + "\",\"RTT\":[";
+        
+        for (auto eachRTT : e.second)
+        perIP += "\"" + eachRTT + "\",";
         
         if(perIP.back() == ',' ) perIP.pop_back();
         perIP += "]},";
@@ -131,10 +224,10 @@ int main(){
     */
 
 
-    while (true) {
+    //while (true) {
         
         parseRecord();
-    }
+    //}
 
     //string rmPingInformationLog = "rm pingInfor.log";
     //system(rmPingInformationLog.c_str());
