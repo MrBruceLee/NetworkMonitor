@@ -10,7 +10,6 @@
 	//the format of rttData is a list of 5 objects, where each object contains its IP and RTT(a list of 5 rtts)
 	//document.getElementById("p1").innerHTML = "IP address is: " + rttData[4]["IP"];
 	//document.getElementById("p2").innerHTML = "RTT is: " + rttData[4]["RTT"][4] + " ms";
-	document.getElementById("showTime").innerHTML = "Hi, there!"
 	
 	//a test for getting current time 
 	function getTime() {
@@ -20,23 +19,7 @@
            + currentdate.getSeconds();
 	}
 	
-	//a test for showing local time
-	function showTime() {
-	var currentdate = new Date(); 
-	var datetime = "Last Sync: " + (currentdate.getMonth()+1)  +  "/"
-                +  currentdate.getDate() + "/" 
-                + currentdate.getFullYear() + " @ "  
-                + currentdate.getHours() + ":"  
-                + currentdate.getMinutes() + ":" 
-                + currentdate.getSeconds();
-		document.getElementById("showTime").innerHTML = getTime();// datetime;
-	}
-
-	//<button type="button" onclick="showTime()">Click to show current time!</button>
 	</script>
-
-	<button type="button" onclick="showTime()">Click to show current time!</button>
-	
 	<script type="text/javascript" src="http://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </head>
 <body>
@@ -101,9 +84,11 @@
 
 		
         // initial value
+        var xValue = 0;
         var yValue1 = 0;
         var yValue2 = 0;
         var yValue3 = 0;
+        
 
 		var updateInterval = 1000;
 		//var countRTT = 1;
@@ -119,9 +104,13 @@
             
 			var time = new Date;
 			// rollback the timeInterval
-			time.setTime(time.getTime() - count * updateInterval);
+			//time.setTime(time.getTime() - count * updateInterval);
+            time.setTime(time.getTime() - (pingData["RTT"].length) * updateInterval);
+
             idx++;
 
+            //xValue = getTime() - pingData["RTT"].length
+            
 			for (var j = 0; j < count; j++) {
 				
 				// set the RTT time 

@@ -7,6 +7,7 @@
 #include <fstream>
 #include <dirent.h>
 #include <map>
+#include <unordered_set>
 #include <vector>
 
 using namespace std;
@@ -29,6 +30,7 @@ void *runSpark(void* threadid){
 */
 
 map<string, string> IPtoWEB;
+unordered_set<string> fileStatus; // read or not
 
 
 map<string, vector<string>> IPtoRTT;
@@ -61,7 +63,7 @@ void storeData(string& line){
     string value = line.substr(start, end - start);
     
     if (type == "PING_RTT"){
-        //cout << key << ", " << value << endl;
+        cout << key << ", " << value << endl;
         IPtoRTT[key].push_back(value);
         
         if(IPtoRTT[key].size() > 500){
@@ -104,6 +106,7 @@ void storeData(string& line){
     }
     #endif
 }
+
 
 void writeJsonFile(string IP){
     ofstream fp;
@@ -161,7 +164,30 @@ void parseRecord(void) {
         #endif
         
         if (entity->d_type == DT_DIR && entity->d_name[0] != '.') {
+            
             string subPath = recordPath + entity->d_name + "/";
+            
+            // avoid spark crash
+            string fileName(entity->d_name);
+            //cout << fileName << "   11111" << endl;
+            
+            if (fileStatus.find(fileName) == fileStatus.end()){
+                fileStatus.insert(fileName);
+                
+            }else{
+                string rmRecordedFolder = "rm -rf " + subPath;
+                //cout << rmRecordedFolder << endl;
+                system(rmRecordedFolder.c_str());
+                
+                fileStatus.erase(fileName);
+                
+                entity = readdir(dir);
+                
+                continue;
+            }
+            
+            //cout << fileName << "     2222" << endl;
+            
             
             #ifdef logging
             cout << "subPath = " << subPath << endl;
@@ -204,8 +230,6 @@ void parseRecord(void) {
                 subEntity = readdir(subDir);
             }
             
-            string rmRecordedFolder = "rm -rf " + subPath;
-            system(rmRecordedFolder.c_str());
         }
         
         #ifdef logging
@@ -262,10 +286,11 @@ int main(){
 
     IPWebMapping();
 
-    //while (true) {
+    while (true) {
         
         parseRecord();
-    //}
+        sleep(1);
+    }
 
     //string rmPingInformationLog = "rm pingInfor.log";
     //system(rmPingInformationLog.c_str());
