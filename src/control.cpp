@@ -14,6 +14,7 @@ using namespace std;
 string sparkPath = "/Users/lilinzhe/Documents/spark-1.6.1/";
 string monitorPath = "/Users/lilinzhe/Desktop/netowrk_monitor/src/";
 string recordPath = "/Users/lilinzhe/Desktop/netowrk_monitor/record/";
+string filesPath = "/Users/lilinzhe/Desktop/netowrk_monitor/files/";
 
 // /Users/lilinzhe/Documents/spark-1.6.1/bin/spark-submit /Users/lilinzhe/Desktop/netowrk_monitor/src/network_monitor.py localhost 9999
 
@@ -26,6 +27,9 @@ void *runSpark(void* threadid){
     system(startSpark.c_str());
 }
 */
+
+map<string, string> IPtoWEB;
+
 
 map<string, vector<string>> IPtoRTT;
 map<string, vector<string>> IPtoTTL;
@@ -57,7 +61,7 @@ void storeData(string& line){
     string value = line.substr(start, end - start);
     
     if (type == "PING_RTT"){
-        //cout << key << ", " << value;
+        //cout << key << ", " << value << endl;
         IPtoRTT[key].push_back(value);
         
         if(IPtoRTT[key].size() > 500){
@@ -68,7 +72,7 @@ void storeData(string& line){
         
         
     }else if (type == "PING_TTL"){
-        //cout << key << ", " << value;
+        //cout << key << ", " << value << endl;
         IPtoTTL[key].push_back(value);
         
         if(IPtoTTL[key].size() > 500){
@@ -76,13 +80,13 @@ void storeData(string& line){
         }
         
     }else if (type == "PING_TTL_Deviation"){
-        //cout << key << ", " << value;
-        if (value > 1) {
+        //cout << key << ", " << value << endl;
+        if (atoi(value.c_str()) > 1) {
             TTL_Deviation.push_back(key);
         }
         
     }else if (type == "PING_LOSSRATE"){
-        //cout << key << ", " << value;
+        //cout << key << ", " << value << endl;
         IPtoLOSSRATE[key].push_back(value);
         
         if(IPtoLOSSRATE[key].size() > 500){
@@ -90,6 +94,49 @@ void storeData(string& line){
         }
         
     }
+    
+    #ifdef logging
+    for (auto e : IPtoRTT) {
+        cout << e.first << " -- " << endl;
+        for (auto ee : e.second) {
+            cout << ee << endl;
+        }
+    }
+    #endif
+}
+
+void writeJsonFile(string IP){
+    ofstream fp;
+    fp.open("info.json");
+    
+    fp << "pingData =" << endl;
+    fp << "{" << endl;
+    
+    fp << "\"IP\":\"" << IP << "\"," << endl;
+    
+    fp << "\"WEB\":\"" << IPtoWEB[IP] << "\"," << endl;
+    
+    fp << "\"RTT\":[";
+    for (auto e : IPtoRTT[IP]) {
+        fp << "\"" << e << "\",";
+    }
+    fp << "]," << endl;
+    
+    fp << "\"TTL\":[";
+    for (auto e : IPtoTTL[IP]) {
+        fp << "\"" << e << "\",";
+    }
+    fp << "]," << endl;
+    
+    fp << "\"LOSS\":[";
+    for (auto e : IPtoLOSSRATE[IP]) {
+        fp << "\"" << e << "\",";
+    }
+    fp << "]" << endl;
+    
+    fp << "};" << endl;
+    
+    fp.close();
 }
 
 
@@ -161,55 +208,45 @@ void parseRecord(void) {
             system(rmRecordedFolder.c_str());
         }
         
+        #ifdef logging
         cout << endl;
+        #endif
         entity = readdir(dir);
     }
     
+    /* need a control function here to determine which IP should be wrote */
     
-/*
-    ofstream fp;
-    fp.open("info.json");
-    
-    fp << "rttData =" << endl << "[" << endl;
-    
-    for (auto e : IPtoRTT) {
-        string perIP = "{\"IP\":\"" + e.first + "\",\"RTT\":[";
-        
-        for (auto eachRTT : e.second)
-            perIP += "\"" + eachRTT + "\",";
-        
-        if(perIP.back() == ',' ) perIP.pop_back();
-        perIP += "]},";
-        
-        fp << perIP << endl;
+    // write data to a json file
+    if (IPtoRTT.begin() != IPtoRTT.end()) {
+        cout << "IP is " << (IPtoRTT.begin())->first << endl;
+        writeJsonFile((IPtoRTT.begin())->first);
     }
-    
-    fp << "];";
-    
-    fp.close();
-*/
-    
-    ofstream fp;
-    fp.open("info.json");
-    
-    fp << "rttData =" << endl << "[" << endl;
-    
-    for (auto e : IPtoRTT) {
-        string perIP = "{\"IP\":\"" + e.first + "\",\"RTT\":[";
-        
-        for (auto eachRTT : e.second)
-        perIP += "\"" + eachRTT + "\",";
-        
-        if(perIP.back() == ',' ) perIP.pop_back();
-        perIP += "]},";
-        
-        fp << perIP << endl;
-    }
-    
-    fp << "];";
-    
-    fp.close();
+
 }
+
+
+void IPWebMapping(){
+    string fileName = filesPath + "web_ip.txt";
+    
+    ifstream fp;
+    fp.open(fileName);
+    
+    string line;
+    while (getline(fp, line)) {
+        size_t space = line.find(" ");
+        string web = line.substr(0, space);
+        string ip = line.substr(space+1);
+
+        IPtoWEB[ip] = web;
+    }
+    
+    #ifdef logging
+    for (auto e : IPtoWEB) {
+        cout << e.first << " -- " << e.second << endl << endl;
+    }
+    #endif
+}
+
 
 
 int main(){
@@ -223,6 +260,7 @@ int main(){
     sleep(2);
     */
 
+    IPWebMapping();
 
     //while (true) {
         

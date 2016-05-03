@@ -44,16 +44,14 @@
 	//test for canvasJS chart
 	window.onload = function () {
 		
-		var dataPoints1 = [];
-		var dataPoints2 = [];
-		var dataPoints3 = [];
-		var dataPoints4 = [];
-		var dataPoints5 = [];
+		var dataPoints1 = []; // round trip time
+		var dataPoints2 = []; // time to live
+		var dataPoints3 = []; // loss rate
 
 		var chart1 = new CanvasJS.Chart("chartContainer1",{
 			theme: "theme3",
 			title :{
-				text: "Live IP RTT Data"
+				text: "LIVE PING RECORDS"
 			},
             legend: {
                 cursor: "pointer",
@@ -68,14 +66,17 @@
            
                     e.chart.render();
                 }
-            },                           
+            },
+            axisX: {
+                title: pingData["WEB"] + " (" + pingData["IP"] + ")"
+            },
 			data: [
 			{ 
 				// dataSeries1
 				type: "line",
 				xValueType: "dateTime",
 				showInLegend: true,
-				name: "IP1( " + rttData[0]["IP"] + " )",
+				name: "round trip time",
 				dataPoints: dataPoints1
 			},
 			{				
@@ -83,7 +84,7 @@
 				type: "line",
 				xValueType: "dateTime",
 				showInLegend: true,
-				name: "IP2( " + rttData[1]["IP"] + " )",
+				name: "time to live",
 				dataPoints: dataPoints2
 			},
 			{				
@@ -91,29 +92,11 @@
 				type: "line",
 				xValueType: "dateTime",
 				showInLegend: true,
-				name: "IP3( " + rttData[2]["IP"] + " )",
+				name: "loss rate",
 				dataPoints: dataPoints3
-			},
-			{				
-				// dataSeries4
-				type: "line",
-				xValueType: "dateTime",
-				showInLegend: true,
-				name: "IP4( " + rttData[3]["IP"] + " )",
-				dataPoints: dataPoints4
-			},
-			{				
-				// dataSeries5
-				type: "line",
-				xValueType: "dateTime",
-				showInLegend: true,
-				name: "IP5( " + rttData[4]["IP"] + " )",
-				dataPoints: dataPoints5
-			}			
+			}		
 			],
-			axisX: {
-				title: "chart updates every 1 secs"
-			},
+
 		});
 
 		
@@ -121,13 +104,12 @@
         var yValue1 = 0;
         var yValue2 = 0;
         var yValue3 = 0;
-        var yValue4 = 0;
-        var yValue5 = 0;
+
 		var updateInterval = 1000;
 		//var countRTT = 1;
 		var dataLength = 100; // number of dataPoints visible at any point
         
-        var idx = 0;
+        var idx = -1;
 		
 		//document.getElementById("p1").innerHTML = time.getTime();
 		
@@ -143,36 +125,46 @@
 			for (var j = 0; j < count; j++) {
 				
 				// set the RTT time 
-				yValue1 = Number(rttData[0]["RTT"][j+idx]);
-				yValue2 = Number(rttData[1]["RTT"][j+idx]);
-				yValue3 = Number(rttData[2]["RTT"][j+idx]);
-				yValue4 = Number(rttData[3]["RTT"][j+idx]);
-				yValue5 = Number(rttData[4]["RTT"][j+idx]);
-				
-				//alert("yValue1 is" + yValue1.toString() );
-				//alert("yValue2 is" + yValue2.toString() );
+				yValue1 = Number(pingData["RTT"][j+idx]);
+                yValue2 = Number(pingData["TTL"][j+idx]);
+                yValue3 = Number(pingData["LOSS"][j+idx]);
 				
 				// pushing the new values
-				dataPoints1.push({
-					x: time.getTime(),
-					y: yValue1
-				});
-				dataPoints2.push({
-					x: time.getTime(),
-					y: yValue2
-				});
-				dataPoints3.push({
-					x: time.getTime(),
-					y: yValue3
-				});
-				dataPoints4.push({
-					x: time.getTime(),
-					y: yValue4
-				});
-				dataPoints5.push({
-					x: time.getTime(),
-					y: yValue5
-				});
+                if(idx < pingData["RTT"].length){
+				    dataPoints1.push({
+					    x: time.getTime(),
+					    y: yValue1
+				    });
+                }else{
+                    dataPoints1.push({
+                        x: time.getTime(),
+                        y: 0
+                    });
+                }
+                
+                if(idx < pingData["TTL"].length){
+				    dataPoints2.push({
+					    x: time.getTime(),
+					    y: yValue2
+				    });
+                }else{
+                    dataPoints2.push({
+                        x: time.getTime(),
+                        y: 0
+                    });
+                }
+                
+                if(idx < pingData["LOSS"].length){
+				    dataPoints3.push({
+					    x: time.getTime(),
+					    y: yValue3
+				    });
+                }else{
+                    dataPoints3.push({
+                        x: time.getTime(),
+                        y: 0
+                    });
+                }
 				
 				// add interval duration to time				
 				time.setTime(time.getTime() + updateInterval);
@@ -184,8 +176,6 @@
 				dataPoints1.shift();	
 				dataPoints2.shift();	
 				dataPoints3.shift();
-				dataPoints4.shift();
-				dataPoints5.shift();
 			}
 
 			chart1.render();
@@ -202,11 +192,14 @@
         
         
         
-        var dataPoints1 = [];
-        var dataPoints2 = [];
-        var dataPoints3 = [];
-        var dataPoints4 = [];
-        var dataPoints5 = [];
+        
+        
+        
+        var dataPoints11 = [];
+        var dataPoints22 = [];
+        var dataPoints33 = [];
+        var dataPoints44 = [];
+        var dataPoints55 = [];
         
         var chart1 = new CanvasJS.Chart("chartContainer1",{
         theme: "theme3",
