@@ -58,10 +58,43 @@ void *analysis(void* threadid){
         }
         
         // delay
+        for (auto& e : IPtoRTT) {
+            if (e.second.size() < 50) {
+                continue;
+            }
+            
+            int prev = INT_MAX;
+            int decreaseLen = 0;
+            for (int i = e.second.size() - 1; i >= 0 ; i--) {
+                if (prev >= (e.second)[i]) {
+                    decreaseLen++;
+                    prev = (e.second)[i];
+                }
+            }
+            
+            if (decreaseLen > 50) {
+                cout << "***** " << IPtoWeb[e.first] << " *** link congestion *****" << endl;
+                
+                /*
+                 string cmd = "traceroute -q 1 " + e.first + " > tr.log";
+                 for (int i = 0; i < 20; i++) {
+                 for (int j = 0; j < 10; j++) {
+                 system(cmd.c_str());
+                 system("cat tr.log | nc -l 9999");
+                 }
+                 sleep(1);
+                 }
+                 */
+                break;
+            }
+        }
         
         
         // ttl
-        for (auto& e : IPtoLOSSRATE) {
+        for (auto& e : IPtoTTL) {
+            if (e.second.size() < 50) {
+                continue;
+            }
             
             int prev = 0;
             int changes = -1;
