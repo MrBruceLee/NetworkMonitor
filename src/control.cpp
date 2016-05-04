@@ -9,6 +9,7 @@
 #include <map>
 #include <unordered_set>
 #include <vector>
+#include <limits.h>
 
 using namespace std;
 
@@ -34,14 +35,14 @@ vector<string> TTL_Deviation;
 map<string, vector<string>> TRtoRTT;
 
 
-void *analysis(void* threadid){
+void *analysis(void* dummy){
     
     while (true) {
         
         // loss rate
         for (auto& e : IPtoLOSSRATE) {
-            if (e.second.back() > 99) {
-                cout << "***** " << IPtoWeb[e.first] << " *** link failure *****" << endl;
+            if (atoi(e.second.back().c_str()) > 99) {
+                cout << "***** " << IPtoWEB[e.first] << " *** link failure *****" << endl;
                 
                 /*
                 string cmd = "traceroute -q 1 " + e.first + " > tr.log";
@@ -66,14 +67,14 @@ void *analysis(void* threadid){
             int prev = INT_MAX;
             int decreaseLen = 0;
             for (int i = e.second.size() - 1; i >= 0 ; i--) {
-                if (prev >= (e.second)[i]) {
+                if (prev >= atoi((e.second)[i].c_str()) ) {
                     decreaseLen++;
-                    prev = (e.second)[i];
+                    prev = atoi((e.second)[i].c_str());
                 }
             }
             
             if (decreaseLen > 50) {
-                cout << "***** " << IPtoWeb[e.first] << " *** link congestion *****" << endl;
+                cout << "***** " << IPtoWEB[e.first] << " *** link congestion *****" << endl;
                 
                 /*
                  string cmd = "traceroute -q 1 " + e.first + " > tr.log";
@@ -99,16 +100,16 @@ void *analysis(void* threadid){
             int prev = 0;
             int changes = -1;
             for (auto& ee : e.second) {
-                if (ee == prev) {
+                if (atoi(ee.c_str()) == prev) {
                     continue;
                 }
                 
-                prev = ee;
+                prev = atoi(ee.c_str());
                 changes++;
             }
             
-            if (e.size() > 2 && changes == 1) {
-                cout << "***** " << IPtoWeb[e.first] << " *** link changes *****" << endl;
+            if (e.second.size() > 2 && changes == 1) {
+                cout << "***** " << IPtoWEB[e.first] << " *** link changes *****" << endl;
                 
                 /*
                 string cmd = "traceroute -q 1 " + e.first + " > tr.log";
@@ -124,6 +125,7 @@ void *analysis(void* threadid){
             }
         }
         
+        sleep(1);
     }
 }
 
@@ -182,7 +184,7 @@ void storeData(string& line){
         }
         
     }else if (type == ""){ // traceroute
-        TRtoRTT
+        
     }
     
     #ifdef logging
@@ -197,38 +199,56 @@ void storeData(string& line){
 
 
 // make it a thread
-void writeJsonFile(string IP){
-    ofstream fp;
-    fp.open("info.json");
+void *writeJsonFile(void* dummy){
+    /* need a control function here to determine which IP should be wrote */
     
-    fp << "pingData =" << endl;
-    fp << "{" << endl;
-    
-    fp << "\"IP\":\"" << IP << "\"," << endl;
-    
-    fp << "\"WEB\":\"" << IPtoWEB[IP] << "\"," << endl;
-    
-    fp << "\"RTT\":[";
-    for (auto e : IPtoRTT[IP]) {
-        fp << "\"" << e << "\",";
+    while (true) {
+        
+        string IP;
+        if (IPtoRTT.begin() != IPtoRTT.end()) {
+            
+            IP = (IPtoRTT.begin())->first;
+        }else{
+            IP = "0.0.0.0";
+        }
+        //cout << "IP is " << (IPtoRTT.begin())->first << endl;
+        
+        ofstream fp;
+        fp.open("info.json");
+        
+        fp << "pingData =" << endl;
+        fp << "{" << endl;
+        
+        fp << "\"IP\":\"" << IP << "\"," << endl;
+        
+        fp << "\"WEB\":\"" << IPtoWEB[IP] << "\"," << endl;
+        
+        fp << "\"RTT\":[";
+        for (auto e : IPtoRTT[IP]) {
+            fp << "\"" << e << "\",";
+        }
+        fp << "]," << endl;
+        
+        fp << "\"TTL\":[";
+        for (auto e : IPtoTTL[IP]) {
+            fp << "\"" << e << "\",";
+        }
+        fp << "]," << endl;
+        
+        fp << "\"LOSS\":[";
+        for (auto e : IPtoLOSSRATE[IP]) {
+            fp << "\"" << e << "\",";
+        }
+        fp << "]" << endl;
+        
+        fp << "};" << endl;
+        
+        fp.close();
+                
+        sleep(1);
+        
     }
-    fp << "]," << endl;
     
-    fp << "\"TTL\":[";
-    for (auto e : IPtoTTL[IP]) {
-        fp << "\"" << e << "\",";
-    }
-    fp << "]," << endl;
-    
-    fp << "\"LOSS\":[";
-    for (auto e : IPtoLOSSRATE[IP]) {
-        fp << "\"" << e << "\",";
-    }
-    fp << "]" << endl;
-    
-    fp << "};" << endl;
-    
-    fp.close();
 }
 
 
@@ -326,14 +346,6 @@ void parseRecord(void) {
         #endif
         entity = readdir(dir);
     }
-    
-    /* need a control function here to determine which IP should be wrote */
-    
-    // write data to a json file
-    if (IPtoRTT.begin() != IPtoRTT.end()) {
-        cout << "IP is " << (IPtoRTT.begin())->first << endl;
-        writeJsonFile((IPtoRTT.begin())->first);
-    }
 
 }
 
@@ -353,6 +365,13 @@ void IPWebMapping(){
         IPtoWEB[ip] = web;
     }
     
+    IPtoWEB["0.0.0.0"] = "NULL";
+    
+    IPtoRTT["0.0.0.0"].push_back("0");
+    IPtoTTL["0.0.0.0"].push_back("0");
+    IPtoLOSSRATE["0.0.0.0"].push_back("0");
+    
+    
     #ifdef logging
     for (auto e : IPtoWEB) {
         cout << e.first << " -- " << e.second << endl << endl;
@@ -366,11 +385,19 @@ int main(){
     IPWebMapping();
     
     pthread_t analysisThread;
-    int rc = pthread_create(&analysisThread, NULL, analysis, NULL);
-    if (rc) {
-        cout << "Error:unable to create thread," << rc << endl;
+    int rc1 = pthread_create(&analysisThread, NULL, analysis, NULL);
+    if (rc1) {
+        cout << "Error:unable to create thread," << rc1 << endl;
         exit(-1);
     }
+    
+    pthread_t jsonThread;
+    int rc2 = pthread_create(&jsonThread, NULL, writeJsonFile, NULL);
+    if (rc2) {
+        cout << "Error:unable to create thread," << rc2 << endl;
+        exit(-1);
+    }
+    
 
     while (true) {
         
