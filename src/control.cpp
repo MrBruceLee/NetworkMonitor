@@ -20,14 +20,6 @@ string filesPath = "/Users/lilinzhe/Desktop/netowrk_monitor/files/";
 // /Users/lilinzhe/Documents/spark-1.6.1/bin/spark-submit /Users/lilinzhe/Desktop/netowrk_monitor/src/network_monitor.py localhost 9999
 
 
-/*
-void *runSpark(void* threadid){
-    cout << sparkPath << endl;
-    string startSpark = sparkPath + "bin/spark-submit " + monitorPath + "network_monitor.py localhost 9999";
-    
-    system(startSpark.c_str());
-}
-*/
 
 map<string, string> IPtoWEB;
 unordered_set<string> fileStatus; // read or not
@@ -40,6 +32,67 @@ map<string, vector<string>> IPtoLOSSRATE;
 vector<string> TTL_Deviation;
 
 map<string, vector<string>> TRtoRTT;
+
+
+void *analysis(void* threadid){
+    
+    while (true) {
+        
+        // loss rate
+        for (auto& e : IPtoLOSSRATE) {
+            if (e.second.back() > 99) {
+                cout << "***** " << IPtoWeb[e.first] << " *** link failure *****" << endl;
+                
+                /*
+                string cmd = "traceroute -q 1 " + e.first + " > tr.log";
+                for (int i = 0; i < 20; i++) {
+                    for (int j = 0; j < 10; j++) {
+                        system(cmd.c_str());
+                        system("cat tr.log | nc -l 9999");
+                    }
+                    sleep(1);
+                }
+                */
+                break;
+            }
+        }
+        
+        // delay
+        
+        
+        // ttl
+        for (auto& e : IPtoLOSSRATE) {
+            
+            int prev = 0;
+            int changes = -1;
+            for (auto& ee : e.second) {
+                if (ee == prev) {
+                    continue;
+                }
+                
+                prev = ee;
+                changes++;
+            }
+            
+            if (e.size() > 2 && changes == 1) {
+                cout << "***** " << IPtoWeb[e.first] << " *** link changes *****" << endl;
+                
+                /*
+                string cmd = "traceroute -q 1 " + e.first + " > tr.log";
+                for (int i = 0; i < 20; i++) {
+                    for (int j = 0; j < 10; j++) {
+                        system(cmd.c_str());
+                        system("cat tr.log | nc -l 9999");
+                    }
+                    sleep(1);
+                }
+                */
+                break;
+            }
+        }
+        
+    }
+}
 
 
 void storeData(string& line){
@@ -95,6 +148,8 @@ void storeData(string& line){
             IPtoLOSSRATE[key].erase(IPtoLOSSRATE[key].begin());
         }
         
+    }else if (type == ""){ // traceroute
+        TRtoRTT
     }
     
     #ifdef logging
@@ -108,6 +163,7 @@ void storeData(string& line){
 }
 
 
+// make it a thread
 void writeJsonFile(string IP){
     ofstream fp;
     fp.open("info.json");
@@ -274,17 +330,14 @@ void IPWebMapping(){
 
 
 int main(){
-    /*
-    pthread_t sparkThread;
-    int rc = pthread_create(&sparkThread, NULL, runSpark, NULL);
+    IPWebMapping();
+    
+    pthread_t analysisThread;
+    int rc = pthread_create(&analysisThread, NULL, analysis, NULL);
     if (rc) {
         cout << "Error:unable to create thread," << rc << endl;
         exit(-1);
     }
-    sleep(2);
-    */
-
-    IPWebMapping();
 
     while (true) {
         
