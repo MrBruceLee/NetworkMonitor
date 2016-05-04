@@ -34,11 +34,11 @@ vector<string> TTL_Deviation;
 
 map<string, vector<string>> TRtoRTT;
 
+string IP = "0.0.0.0";
 
 void *analysis(void* dummy){
     
     while (true) {
-        
         // loss rate
         for (auto& e : IPtoLOSSRATE) {
             if (atoi(e.second.back().c_str()) > 99) {
@@ -60,9 +60,10 @@ void *analysis(void* dummy){
         
         // delay
         for (auto& e : IPtoRTT) {
-            if (e.second.size() < 50) {
-                continue;
-            }
+            //cout << e.second.size() << endl;
+            //if (e.second.size() < 30) {
+            //    continue;
+            //}
             
             int prev = INT_MAX;
             int decreaseLen = 0;
@@ -73,8 +74,12 @@ void *analysis(void* dummy){
                 }
             }
             
-            if (decreaseLen > 50) {
-                cout << "***** " << IPtoWEB[e.first] << " *** link congestion *****" << endl;
+            cout << decreaseLen << endl;
+            if (decreaseLen > 30) {
+                if (IP != e.first) {
+                    cout << "***** " << IPtoWEB[e.first] << " *** link congestion *****" << endl;
+                    IP = e.first;
+                }
                 
                 /*
                  string cmd = "traceroute -q 1 " + e.first + " > tr.log";
@@ -93,7 +98,7 @@ void *analysis(void* dummy){
         
         // ttl
         for (auto& e : IPtoTTL) {
-            if (e.second.size() < 50) {
+            if (e.second.size() < 30) {
                 continue;
             }
             
@@ -209,9 +214,9 @@ void *writeJsonFile(void* dummy){
     
     while (true) {
         
-        if (IPtoRTT.begin() != IPtoRTT.end()) {
+        if (IP != "0.0.0.0") {
             
-            string IP = (IPtoRTT.begin())->first;
+            //string IP = (IPtoRTT.begin())->first;
             //cout << "IP is " << IP << endl;
             
             ofstream fp;
@@ -247,7 +252,7 @@ void *writeJsonFile(void* dummy){
             fp.close();
             
         }else{
-            string IP = "0.0.0.0";
+            //string IP = "0.0.0.0";
             //cout << "IP is " << IP << endl;
             
             ofstream fp;
