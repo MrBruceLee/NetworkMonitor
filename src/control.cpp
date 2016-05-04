@@ -151,7 +151,7 @@ void storeData(string& line){
     string value = line.substr(start, end - start);
     
     if (type == "PING_RTT"){
-        cout << key << ", " << value << endl;
+        //cout << key << ", " << value << endl;
         IPtoRTT[key].push_back(value);
         
         if(IPtoRTT[key].size() > 500){
@@ -183,8 +183,13 @@ void storeData(string& line){
             IPtoLOSSRATE[key].erase(IPtoLOSSRATE[key].begin());
         }
         
-    }else if (type == ""){ // traceroute
+    }else if (type == "TRACEROUTE_RTT"){ // traceroute
+        //cout << key << ", " << value << endl;
+        TRtoRTT[key].push_back(value);
         
+        if(TRtoRTT[key].size() > 500){
+            TRtoRTT[key].erase(TRtoRTT[key].begin());
+        }
     }
     
     #ifdef logging
@@ -204,47 +209,108 @@ void *writeJsonFile(void* dummy){
     
     while (true) {
         
-        string IP;
         if (IPtoRTT.begin() != IPtoRTT.end()) {
             
-            IP = (IPtoRTT.begin())->first;
+            string IP = (IPtoRTT.begin())->first;
+            //cout << "IP is " << IP << endl;
+            
+            ofstream fp;
+            fp.open("ping.json");
+            
+            fp << "pingData =" << endl;
+            fp << "{" << endl;
+            
+            fp << "\"IP\":\"" << IP << "\"," << endl;
+            
+            fp << "\"WEB\":\"" << IPtoWEB[IP] << "\"," << endl;
+            
+            fp << "\"RTT\":[";
+            for (auto e : IPtoRTT[IP]) {
+                fp << "\"" << e << "\",";
+            }
+            fp << "]," << endl;
+            
+            fp << "\"TTL\":[";
+            for (auto e : IPtoTTL[IP]) {
+                fp << "\"" << e << "\",";
+            }
+            fp << "]," << endl;
+            
+            fp << "\"LOSS\":[";
+            for (auto e : IPtoLOSSRATE[IP]) {
+                fp << "\"" << e << "\",";
+            }
+            fp << "]" << endl;
+            
+            fp << "};" << endl;
+            
+            fp.close();
+            
         }else{
-            IP = "0.0.0.0";
+            string IP = "0.0.0.0";
+            //cout << "IP is " << IP << endl;
+            
+            ofstream fp;
+            fp.open("ping.json");
+            
+            fp << "pingData =" << endl;
+            fp << "{" << endl;
+            fp << "\"IP\":\"0.0.0.0\"," << endl;
+            fp << "\"WEB\":\"NULL\"," << endl;
+            fp << "\"RTT\":[\"0\",]," << endl;
+            fp << "\"TTL\":[\"0\",]," << endl;
+            fp << "\"LOSS\":[\"0\",]" << endl;
+            fp << "};" << endl;
+            
+            fp.close();
         }
-        //cout << "IP is " << (IPtoRTT.begin())->first << endl;
         
-        ofstream fp;
-        fp.open("info.json");
         
-        fp << "pingData =" << endl;
-        fp << "{" << endl;
-        
-        fp << "\"IP\":\"" << IP << "\"," << endl;
-        
-        fp << "\"WEB\":\"" << IPtoWEB[IP] << "\"," << endl;
-        
-        fp << "\"RTT\":[";
-        for (auto e : IPtoRTT[IP]) {
-            fp << "\"" << e << "\",";
-        }
-        fp << "]," << endl;
-        
-        fp << "\"TTL\":[";
-        for (auto e : IPtoTTL[IP]) {
-            fp << "\"" << e << "\",";
-        }
-        fp << "]," << endl;
-        
-        fp << "\"LOSS\":[";
-        for (auto e : IPtoLOSSRATE[IP]) {
-            fp << "\"" << e << "\",";
-        }
-        fp << "]" << endl;
-        
-        fp << "};" << endl;
-        
-        fp.close();
+        if (TRtoRTT.begin() != TRtoRTT.end()) {
+            
+            ofstream fp;
+            fp.open("tr.json");
+            
+            fp << "trData =" << endl;
+            fp << "[" << endl;
+            
+            // {"IP":"136.7.153.146","RTT":["11.267","11.633","71.149","79.821","67.672"]},
+            for (auto e : TRtoRTT) {
+                fp << "{";
+                fp << "\"IP\":\"" << e.first << "\",";
                 
+                fp << "\"RTT\":[";
+                for (auto eachRTT : e.second) {
+                    fp << "\"" << eachRTT << "\",";
+                }
+                fp << "]";
+                
+                fp << "}," << endl;
+            }
+            
+            int cnt = 20 - TRtoRTT.size();
+            for (int i = 0; i < cnt; i++) {
+                fp << "{\"IP\":\"NULL\",\"RTT\":[\"0\"]}," << endl;
+            }
+
+            
+            fp << "];" << endl;
+            fp.close();
+            
+        }else{
+            
+            ofstream fp;
+            fp.open("tr.json");
+            
+            fp << "trData =" << endl;
+            fp << "[" << endl;
+            fp << "{\"IP\":\"NULL\",\"RTT\":[\"0\"]}," << endl;
+            fp << "];" << endl;
+            
+            fp.close();
+        }
+        
+        
         sleep(1);
         
     }
@@ -364,13 +430,6 @@ void IPWebMapping(){
 
         IPtoWEB[ip] = web;
     }
-    
-    IPtoWEB["0.0.0.0"] = "NULL";
-    
-    IPtoRTT["0.0.0.0"].push_back("0");
-    IPtoTTL["0.0.0.0"].push_back("0");
-    IPtoLOSSRATE["0.0.0.0"].push_back("0");
-    
     
     #ifdef logging
     for (auto e : IPtoWEB) {

@@ -193,6 +193,16 @@
         var dataPoint8 = [];
         var dataPoint9 = [];
         var dataPoint10 = [];
+        var dataPoint11 = [];
+        var dataPoint12 = [];
+        var dataPoint13 = [];
+        var dataPoint14 = [];
+        var dataPoint15 = [];
+        var dataPoint16 = [];
+        var dataPoint17 = [];
+        var dataPoint18 = [];
+        var dataPoint19 = [];
+        var dataPoint20 = [];
         
         var chart2 = new CanvasJS.Chart("chartContainer2",{
             theme: "theme3",
@@ -216,7 +226,7 @@
             data: [
             {
                 // dataSeries1
-                type: "area",
+                type: "line",
                 xValueType: "dateTime",
                 showInLegend: true,
                 name: trData[0]["IP"],
@@ -224,7 +234,7 @@
             },
             {
                 // dataSeries2
-                type: "area",
+                type: "line",
                 xValueType: "dateTime",
                 showInLegend: true,
                 name: trData[1]["IP"],
@@ -232,7 +242,7 @@
             },
             {
                 // dataSeries3
-                type: "area",
+                type: "line",
                 xValueType: "dateTime",
                 showInLegend: true,
                 name: trData[2]["IP"],
@@ -240,7 +250,7 @@
             },
             {
                 // dataSeries4
-                type: "area",
+                type: "line",
                 xValueType: "dateTime",
                 showInLegend: true,
                 name: trData[3]["IP"],
@@ -248,7 +258,7 @@
             },
             {
                 // dataSeries5
-                type: "area",
+                type: "line",
                 xValueType: "dateTime",
                 showInLegend: true,
                 name: trData[4]["IP"],
@@ -256,7 +266,7 @@
             },
             {
                 // dataSeries6
-                type: "area",
+                type: "line",
                 xValueType: "dateTime",
                 showInLegend: true,
                 name: trData[5]["IP"],
@@ -264,7 +274,7 @@
             },
             {
                 // dataSeries7
-                type: "area",
+                type: "line",
                 xValueType: "dateTime",
                 showInLegend: true,
                 name: trData[6]["IP"],
@@ -272,7 +282,7 @@
             },
             {
                 // dataSeries8
-                type: "area",
+                type: "line",
                 xValueType: "dateTime",
                 showInLegend: true,
                 name: trData[7]["IP"],
@@ -280,7 +290,7 @@
             },
             {
                 // dataSeries9
-                type: "area",
+                type: "line",
                 xValueType: "dateTime",
                 showInLegend: true,
                 name: trData[8]["IP"],
@@ -288,11 +298,91 @@
             },
             {
                 // dataSeries10
-                type: "area",
+                type: "line",
                 xValueType: "dateTime",
                 showInLegend: true,
                 name: trData[9]["IP"],
                 dataPoints: dataPoint10
+            },
+            {
+                // dataSeries11
+                type: "line",
+                xValueType: "dateTime",
+                showInLegend: true,
+                name: rttData[10]["IP"],
+                dataPoints: dataPoint11
+            },
+            {
+                // dataSeries12
+                type: "line",
+                xValueType: "dateTime",
+                showInLegend: true,
+                name: trData[11]["IP"],
+                dataPoints: dataPoint12
+            },
+            {
+                // dataSeries13
+                type: "line",
+                xValueType: "dateTime",
+                showInLegend: true,
+                name: trData[12]["IP"],
+                dataPoints: dataPoint13
+            },
+            {
+                // dataSeries14
+                type: "line",
+                xValueType: "dateTime",
+                showInLegend: true,
+                name: trData[13]["IP"],
+                dataPoints: dataPoint14
+            },
+            {
+                // dataSeries15
+                type: "line",
+                xValueType: "dateTime",
+                showInLegend: true,
+                name: trData[14]["IP"],
+                dataPoints: dataPoint15
+            },
+            {
+                // dataSeries16
+                type: "line",
+                xValueType: "dateTime",
+                showInLegend: true,
+                name: trData[15]["IP"],
+                dataPoints: dataPoint16
+            },
+            {
+                // dataSeries17
+                type: "line",
+                xValueType: "dateTime",
+                showInLegend: true,
+                name: trData[16]["IP"],
+                dataPoints: dataPoint17
+            },
+            {
+                // dataSeries18
+                type: "line",
+                xValueType: "dateTime",
+                showInLegend: true,
+                name: trData[17]["IP"],
+                dataPoints: dataPoint18
+            },
+            {
+                // dataSeries19
+                type: "line",
+                xValueType: "dateTime",
+                showInLegend: true,
+                name: trData[18]["IP"],
+                dataPoints: dataPoint19
+            },
+            {
+                // dataSeries20
+                type: "line",
+                xValueType: "dateTime",
+                showInLegend: true,
+                name: trData[19]["IP"],
+                dataPoints: dataPoint20
             },
             ],
         });
@@ -310,6 +400,16 @@
         var yValues8 = 0;
         var yValues9 = 0;
         var yValues10 = 0;
+        var yValues11 = 0;
+        var yValues12 = 0;
+        var yValues13 = 0;
+        var yValues14 = 0;
+        var yValues15 = 0;
+        var yValues16 = 0;
+        var yValues17 = 0;
+        var yValues18 = 0;
+        var yValues19 = 0;
+        var yValues20 = 0;
         
         //var updateInterval = 1000;
         //var dataLength = 100; // number of dataPoints visible at any point
@@ -340,8 +440,18 @@
                 yValues8 = Number(trData[7]["RTT"][j+idxx]);
                 yValues9 = Number(trData[8]["RTT"][j+idxx]);
                 yValues10 = Number(trData[9]["RTT"][j+idxx]);
+                yValues11 = Number(trData[10]["RTT"][j+idxx]);
+                yValues12 = Number(trData[11]["RTT"][j+idxx]);
+                yValues13 = Number(trData[12]["RTT"][j+idxx]);
+                yValues14 = Number(trData[13]["RTT"][j+idxx]);
+                yValues15 = Number(trData[14]["RTT"][j+idxx]);
+                yValues16 = Number(trData[15]["RTT"][j+idxx]);
+                yValues17 = Number(trData[16]["RTT"][j+idxx]);
+                yValues18 = Number(trData[17]["RTT"][j+idxx]);
+                yValues19 = Number(trData[18]["RTT"][j+idxx]);
+                yValues20 = Number(trData[19]["RTT"][j+idxx]);
                 
-                //alert("yValues1 is" + yValues1.toString() );
+                alert("yValues1 is" + yValues1.toString() );
                 //alert("yValue2 is" + yValue2.toString() );
                 
                 // pushing the new values
@@ -465,6 +575,126 @@
                     });
                 }
                 
+                if(idxx < trData[10]["RTT"].length){
+                    dataPoint11.push({
+                        x: time.getTime(),
+                        y: yValues11
+                    });
+                }else{
+                    dataPoint11.push({
+                        x: time.getTime(),
+                        y: 0
+                    });
+                }
+                
+                if(idxx < trData[11]["RTT"].length){
+                    dataPoint12.push({
+                        x: time.getTime(),
+                        y: yValues12
+                    });
+                }else{
+                    dataPoint12.push({
+                        x: time.getTime(),
+                        y: 0
+                    });
+                }
+                
+                if(idxx < trData[12]["RTT"].length){
+                    dataPoint13.push({
+                        x: time.getTime(),
+                        y: yValues13
+                    });
+                }else{
+                    dataPoint13.push({
+                        x: time.getTime(),
+                        y: 0
+                    });
+                }
+                
+                if(idxx < trData[13]["RTT"].length){
+                    dataPoint14.push({
+                        x: time.getTime(),
+                        y: yValues14
+                    });
+                }else{
+                    dataPoint14.push({
+                        x: time.getTime(),
+                        y: 0
+                    });
+                }
+                
+                if(idxx < trData[14]["RTT"].length){
+                    dataPoint15.push({
+                        x: time.getTime(),
+                        y: yValues15
+                    });
+                }else{
+                    dataPoint15.push({
+                        x: time.getTime(),
+                        y: 0
+                    });
+                }
+                
+                if(idxx < trData[15]["RTT"].length){
+                    dataPoint16.push({
+                        x: time.getTime(),
+                        y: yValues16
+                    });
+                }else{
+                    dataPoint16.push({
+                        x: time.getTime(),
+                        y: 0
+                    });
+                }
+                
+                if(idxx < trData[16]["RTT"].length){
+                    dataPoint17.push({
+                        x: time.getTime(),
+                        y: yValues17
+                    });
+                }else{
+                    dataPoint17.push({
+                        x: time.getTime(),
+                        y: 0
+                    });
+                }
+                
+                if(idxx < trData[17]["RTT"].length){
+                    dataPoint18.push({
+                        x: time.getTime(),
+                        y: yValues18
+                    });
+                }else{
+                    dataPoint18.push({
+                        x: time.getTime(),
+                        y: 0
+                    });
+                }
+                
+                if(idxx < trData[18]["RTT"].length){
+                    dataPoint19.push({
+                        x: time.getTime(),
+                        y: yValues19
+                    });
+                }else{
+                    dataPoint19.push({
+                        x: time.getTime(),
+                        y: 0
+                    });
+                }
+                
+                if(idxx < trData[19]["RTT"].length){
+                    dataPoint20.push({
+                        x: time.getTime(),
+                        y: yValues20
+                    });
+                }else{
+                    dataPoint20.push({
+                        x: time.getTime(),
+                        y: 0
+                    });
+                }
+                
                 // add interval duration to time				
                 time.setTime(time.getTime() + updateInterval);
                 
@@ -482,6 +712,16 @@
                 dataPoint8.shift();
                 dataPoint9.shift();
                 dataPoint10.shift();
+                dataPoint11.shift();
+                dataPoint12.shift();
+                dataPoint13.shift();
+                dataPoint14.shift();
+                dataPoint15.shift();
+                dataPoint16.shift();
+                dataPoint17.shift();
+                dataPoint18.shift();
+                dataPoint19.shift();
+                dataPoint20.shift();
             }
             
             chart2.render();

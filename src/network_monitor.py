@@ -13,7 +13,7 @@ if __name__ == "__main__":
         exit(-1)
 
     sc = SparkContext(appName="NetworkMonitor")
-    ssc = StreamingContext(sc, 5)
+    ssc = StreamingContext(sc, 2)
         
     lines = ssc.socketTextStream(sys.argv[1], int(sys.argv[2]))
 
@@ -41,7 +41,7 @@ if __name__ == "__main__":
     IP_RTT_Record.saveAsTextFiles("/Users/lilinzhe/Desktop/netowrk_monitor/record/IP_RTT_Record")
     IP_RTT_Record.pprint()
 
-    IP_RTT_Record_Windowed = recordsPing.window(60, 5) \
+    IP_RTT_Record_Windowed = recordsPing.window(60, 2) \
                                         .map(parseIPtoRTT)
     IP_RTT_Average = IP_RTT_Record_Windowed.mapValues(lambda x: (x, 1)) \
                                            .reduceByKey(lambda x, y: (x[0] + y[0], x[1] + y[1])) \
@@ -80,7 +80,7 @@ if __name__ == "__main__":
     IP_TTL_Record.saveAsTextFiles("/Users/lilinzhe/Desktop/netowrk_monitor/record/IP_TTL_Record");
     IP_TTL_Record.pprint()
 
-    IP_TTL_Record_Windowed = recordsPing.window(60, 5) \
+    IP_TTL_Record_Windowed = recordsPing.window(60, 2) \
                                         .map(parseIPtoTTL)
     IP_TTL_Average = IP_TTL_Record_Windowed.mapValues(lambda x: (x, 1)) \
                                            .reduceByKey(lambda x, y: (x[0] + y[0], x[1] + y[1])) \
@@ -102,7 +102,7 @@ if __name__ == "__main__":
         return (s[idxStart:idxEnd], 1)
 
     IP_Sent = lines.filter(lambda line: "PING" in line) \
-                        .window(60, 5) \
+                        .window(60, 2) \
                         .map(parseIPSent) \
                         .reduceByKey(lambda x, y: x + y)
     #IP_Sent.map(lambda x : ("sent", x)).pprint()
@@ -114,7 +114,7 @@ if __name__ == "__main__":
 
         return (s[idxStart:idxEnd], 1)
 
-    IP_Recieved = recordsPing.window(60, 5) \
+    IP_Recieved = recordsPing.window(60, 2) \
                              .map(parseIPRecieved) \
                              .reduceByKey(lambda x, y: x + y)
     #IP_Recieved.map(lambda x : ("recieved", x)).pprint()
