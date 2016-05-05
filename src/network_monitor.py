@@ -102,9 +102,9 @@ if __name__ == "__main__":
         return (s[idxStart:idxEnd], 1)
 
     IP_Sent = lines.filter(lambda line: "PING" in line) \
-                        .window(60, 2) \
-                        .map(parseIPSent) \
-                        .reduceByKey(lambda x, y: x + y)
+                    .window(60, 2) \
+                    .map(parseIPSent) \
+                    .reduceByKey(lambda x, y: x + y)
     #IP_Sent.map(lambda x : ("sent", x)).pprint()
 
 
@@ -119,7 +119,13 @@ if __name__ == "__main__":
                              .reduceByKey(lambda x, y: x + y)
     #IP_Recieved.map(lambda x : ("recieved", x)).pprint()
 
-    IP_LossRate = IP_Sent.join(IP_Recieved) \
+    def removeNone(x):
+        if x[1] == None:
+            return (x[0], 0)
+        else:
+            return (x[0], x[1])
+    IP_LossRate = IP_Sent.leftOuterJoin(IP_Recieved) \
+                         .mapValues(removeNone) \
                          .mapValues(lambda x: (x[0] - x[1]) * 100 / x[0]) \
                          .map(lambda x: ("PING_LOSSRATE", "k:" + x[0] + ".k", "v:" + str(x[1]) + ".v"))
     IP_LossRate.saveAsTextFiles("/Users/lilinzhe/Desktop/netowrk_monitor/record/IP_LossRate");

@@ -42,7 +42,11 @@ void *analysis(void* dummy){
         // loss rate
         for (auto& e : IPtoLOSSRATE) {
             if (atoi(e.second.back().c_str()) > 99) {
-                cout << "***** " << IPtoWEB[e.first] << " *** link failure *****" << endl;
+                if (IP != e.first) {
+                    IP = e.first;
+                    cout << "***** " << IPtoWEB[e.first] << " *** link failure ***** " << IP << endl;
+                }
+                
                 
                 /*
                 string cmd = "traceroute -q 1 " + e.first + " > tr.log";
@@ -74,11 +78,10 @@ void *analysis(void* dummy){
                 }
             }
             
-            cout << decreaseLen << endl;
             if (decreaseLen > 30) {
                 if (IP != e.first) {
-                    cout << "***** " << IPtoWEB[e.first] << " *** link congestion *****" << endl;
                     IP = e.first;
+                    cout << "***** " << IPtoWEB[e.first] << " *** link congestion ***** " << IP << endl;
                 }
                 
                 /*
