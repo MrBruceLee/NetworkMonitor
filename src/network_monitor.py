@@ -17,9 +17,6 @@ if __name__ == "__main__":
         
     lines = ssc.socketTextStream(sys.argv[1], int(sys.argv[2]))
 
-
-
-
     recordsPing = lines.filter(lambda line: "icmp_seq=" in line)
 
     def parseIPtoRTT(s):
@@ -39,7 +36,6 @@ if __name__ == "__main__":
 
     IP_RTT_Record = recordsPing.map(parseIPtoRTT).map(lambda x: ("PING_RTT", "k:" + x[0] + ".k", "v:" + str(x[1]) + ".v"))
     IP_RTT_Record.saveAsTextFiles("/Users/lilinzhe/Desktop/netowrk_monitor/record/IP_RTT_Record")
-    #IP_RTT_Record.pprint()
 
     IP_RTT_Record_Windowed = recordsPing.window(60, 2) \
                                         .map(parseIPtoRTT)
