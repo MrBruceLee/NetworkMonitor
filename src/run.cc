@@ -2,12 +2,20 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <fstream>
+#include <iostream>
 
 using namespace std;
 
-string path = "/Users/lilinzhe/Desktop/netowrk_monitor/test/Delay/";
+//string path = "/Users/lilinzhe/Desktop/netowrk_monitor/test/TTL/";
 
-int main(){
+int main(int argc, char** argv){
+    
+    if (argc < 2) {
+        cout << "Usage run <path>" << endl;
+        return 0 ;
+    }
+    
+    string path(argv[1]);
     
     int i = -1;
     string fileName;

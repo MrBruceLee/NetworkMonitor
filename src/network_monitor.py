@@ -39,7 +39,7 @@ if __name__ == "__main__":
 
     IP_RTT_Record = recordsPing.map(parseIPtoRTT).map(lambda x: ("PING_RTT", "k:" + x[0] + ".k", "v:" + str(x[1]) + ".v"))
     IP_RTT_Record.saveAsTextFiles("/Users/lilinzhe/Desktop/netowrk_monitor/record/IP_RTT_Record")
-    IP_RTT_Record.pprint()
+    #IP_RTT_Record.pprint()
 
     IP_RTT_Record_Windowed = recordsPing.window(60, 2) \
                                         .map(parseIPtoRTT)
@@ -53,7 +53,7 @@ if __name__ == "__main__":
                                              .mapValues(lambda x: (x[0] / x[1])**(0.5)) \
                                              .map(lambda x: ("PING_RTT_Deviation", "k:" + x[0] + ".k", "v:" + str(x[1]) + ".v"))
     IP_RTT_Deviation.saveAsTextFiles("/Users/lilinzhe/Desktop/netowrk_monitor/record/IP_RTT_Deviation")
-    IP_RTT_Deviation.pprint()
+    #IP_RTT_Deviation.pprint()
 
 
 
@@ -78,7 +78,7 @@ if __name__ == "__main__":
     
     IP_TTL_Record = recordsPing.map(parseIPtoTTL).map(lambda x: ("PING_TTL", "k:" + x[0] + ".k", "v:" + str(x[1]) + ".v"))
     IP_TTL_Record.saveAsTextFiles("/Users/lilinzhe/Desktop/netowrk_monitor/record/IP_TTL_Record");
-    IP_TTL_Record.pprint()
+    #IP_TTL_Record.pprint()
 
     IP_TTL_Record_Windowed = recordsPing.window(60, 2) \
                                         .map(parseIPtoTTL)
@@ -91,7 +91,7 @@ if __name__ == "__main__":
                                              .mapValues(lambda x: (x[0] / x[1])**(0.5)) \
                                              .map(lambda x: ("PING_TTL_Deviation", "k:" + x[0] + ".k", "v:" + str(x[1]) + ".v"))
     IP_TTL_Deviation.saveAsTextFiles("/Users/lilinzhe/Desktop/netowrk_monitor/record/IP_TTL_Deviation");
-    IP_TTL_Deviation.pprint();
+    #IP_TTL_Deviation.pprint();
 
 
 
@@ -105,8 +105,6 @@ if __name__ == "__main__":
                     .window(60, 2) \
                     .map(parseIPSent) \
                     .reduceByKey(lambda x, y: x + y)
-    #IP_Sent.map(lambda x : ("sent", x)).pprint()
-
 
     def parseIPRecieved(s):
         idxStart = s.find("from ") + 5
@@ -117,7 +115,6 @@ if __name__ == "__main__":
     IP_Recieved = recordsPing.window(60, 2) \
                              .map(parseIPRecieved) \
                              .reduceByKey(lambda x, y: x + y)
-    #IP_Recieved.map(lambda x : ("recieved", x)).pprint()
 
     def removeNone(x):
         if x[1] == None:
@@ -129,7 +126,7 @@ if __name__ == "__main__":
                          .mapValues(lambda x: (x[0] - x[1]) * 100 / x[0]) \
                          .map(lambda x: ("PING_LOSSRATE", "k:" + x[0] + ".k", "v:" + str(x[1]) + ".v"))
     IP_LossRate.saveAsTextFiles("/Users/lilinzhe/Desktop/netowrk_monitor/record/IP_LossRate");
-    IP_LossRate.pprint()
+    #IP_LossRate.pprint()
 
 
 
@@ -154,7 +151,7 @@ if __name__ == "__main__":
     TraceRoute_record = recordsTraceRoute.map(parseTraceRouteInformation) \
                                          .map(lambda x: ("TRACEROUTE_RTT", "k:" + x[0] + ".k", "v:" + str(x[1]) + ".v"))
     TraceRoute_record.saveAsTextFiles("/Users/lilinzhe/Desktop/netowrk_monitor/record/TraceRoute_record");
-    TraceRoute_record.pprint()
+    #TraceRoute_record.pprint()
 
 
 

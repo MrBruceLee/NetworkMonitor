@@ -44,7 +44,7 @@ void *analysis(void* dummy){
             if (atoi(e.second.back().c_str()) > 99) {
                 if (IP != e.first) {
                     IP = e.first;
-                    cout << "***** " << IPtoWEB[e.first] << " *** link failure ***** " << IP << endl;
+                    cout << "***** " << IPtoWEB[e.first] << " *** link failure ***** " << IP << " : " << IPtoWEB[IP] << endl;
                 }
                 
                 
@@ -69,19 +69,26 @@ void *analysis(void* dummy){
             //    continue;
             //}
             
-            int prev = INT_MAX;
+            double prev = INT_MAX;
             int decreaseLen = 0;
             for (int i = e.second.size() - 1; i >= 0 ; i--) {
-                if (prev >= atoi((e.second)[i].c_str()) ) {
+                if (prev >= atof((e.second)[i].c_str()) ) {
                     decreaseLen++;
-                    prev = atoi((e.second)[i].c_str());
+                    prev = atof((e.second)[i].c_str());
+                    if (e.first == "106.48.13.33") {
+                        //cout << prev << " ";
+                    }
+                }else{
+                    decreaseLen--;
                 }
             }
+            
+            //cout << endl;
             
             if (decreaseLen > 30) {
                 if (IP != e.first) {
                     IP = e.first;
-                    cout << "***** " << IPtoWEB[e.first] << " *** link congestion ***** " << IP << endl;
+                    cout << "***** " << IPtoWEB[e.first] << " *** link congestion ***** " << IP << " : " << IPtoWEB[IP] << endl;
                 }
                 
                 /*
@@ -116,8 +123,12 @@ void *analysis(void* dummy){
                 changes++;
             }
             
-            if (e.second.size() > 2 && changes == 1) {
-                cout << "***** " << IPtoWEB[e.first] << " *** link changes *****" << endl;
+            if (e.second.size() > 4 && changes == 1 && TTL_Deviation.back() == e.first) {
+                
+                if (IP != e.first) {
+                    IP = e.first;
+                    cout << "***** " << IPtoWEB[e.first] << " *** link changes ***** " << IP << " : " << IPtoWEB[IP] << endl;
+                }
                 
                 /*
                 string cmd = "traceroute -q 1 " + e.first + " > tr.log";
@@ -179,7 +190,8 @@ void storeData(string& line){
         
     }else if (type == "PING_TTL_Deviation"){
         //cout << key << ", " << value << endl;
-        if (atoi(value.c_str()) > 1) {
+        //if(atof(value.c_str()) != 0) cout << key << " : " << value << endl;
+        if (atof(value.c_str()) >= 0.8) {
             TTL_Deviation.push_back(key);
         }
         
@@ -469,7 +481,7 @@ int main(){
     while (true) {
         
         parseRecord();
-        sleep(1);
+        sleep(4);
     }
 
     //string rmPingInformationLog = "rm pingInfor.log";

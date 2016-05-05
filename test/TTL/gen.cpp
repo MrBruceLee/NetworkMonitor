@@ -7,17 +7,68 @@ using namespace std;
 
 int main(){
     
-    /*
+    
     for (int i = 0; i < 100; i++) {
-        string cmd = "sh script.sh > ping" + to_string(i) + ".log";
+        string cmd = "sh script.sh > ping_temp" + to_string(i) + ".log";
         system(cmd.c_str());
         
         sleep(1);
     }
+    
+    
+    
+    
+    ifstream ifp;
+    ofstream ofp;
+    
+    int i = -1;
+    
+    while (true) {
+        i++;
+        
+        string fileName = "ping_temp" + to_string(i) + ".log";
+        ifp.open(fileName);
+        if (ifp.is_open() == false) {
+            break;
+        }
+        
+        fileName = "ping" + to_string(i) + ".log";
+        ofp.open(fileName);
+        
+        string line;
+        
+        while (getline(ifp, line)) {
+            if (line.substr(0,28) == "64 bytes from 104.16.33.249:") {
+                if (i > 15) {
+                    ofp << "64 bytes from 104.16.33.249: icmp_seq=0 ttl=56 time=16.319 ms" << endl;
+                }else{
+                    ofp << line << endl;
+                }
+            }else{
+                ofp << line << endl;
+            }
+        }
+        
+        ifp.close();
+        ofp.close();
+        
+        fileName = "ping_temp" + to_string(i) + ".log";
+        string cmd = "rm -rf " +  fileName;
+        system(cmd.c_str());
+        
+    }
+
+    
+    
+    /*
+    for (int i = 0; i < 100; i++) {
+        string cmd = "traceroute -q 1 104.16.33.249 > tr" + to_string(i) + ".log";
+        system(cmd.c_str());
+        sleep(10);
+    }
     */
     
-
-    /*
+    
     for (int i = 0; i < 100; i++) {
         string fileName = "tr" + to_string(i) + ".log";
         
@@ -46,52 +97,12 @@ int main(){
         fp << " 7  xe-1-2-0.edge01.ord02.as13335.net (206.223.119.180)  8." << r << " ms" << endl;
         
         r = rand() % 1000;
-        int rr = rand() % 100;
-        fp << " 8  104.16.33.249 (104.16.33.249)  100." << r <<" ms" << endl;
+        int rr = rand() % 2;
+        fp << " 8  104.16.33.249 (104.16.33.249)  1" << rr << "." << r <<" ms" << endl;
+        
+        fp.close();
         
     }
-*/
-    
-    
-    
-    
-    ifstream ifp;
-    ofstream ofp;
-    
-    int i = -1;
-    
-    while (true) {
-        i++;
-        
-        string fileName = "/Users/lilinzhe/Desktop/netowrk_monitor/test/Loss/ping" + to_string(i) + ".log";
-        ifp.open(fileName);
-        if (ifp.is_open() == false) {
-            break;
-        }
-        
-        fileName = "ping" + to_string(i) + ".log";
-        ofp.open(fileName);
-        
-        string line;
-        
-        while (getline(ifp, line)) {
-            if (line.substr(0,28) == "64 bytes from 104.16.33.249:") {
-                if (i > 10) {
-                    ofp << "Request 104.16.33.249 timeout for icmp_seq 0" << endl;
-                }else{
-                    ofp << line << endl;
-                }
-            }else{
-                ofp << line << endl;
-            }
-        }
-        
-        ifp.close();
-        ofp.close();
-        
-    }
-    
-    
 }
 
 

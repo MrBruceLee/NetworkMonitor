@@ -1,96 +1,96 @@
 PING 104.16.33.249 (104.16.33.249): 56 data bytes
-Request 104.16.33.249 timeout for icmp_seq 0
+64 bytes from 104.16.33.249: icmp_seq=0 ttl=56 time=16.319 ms
 
 --- 104.16.33.249 ping statistics ---
 1 packets transmitted, 1 packets received, 0.0% packet loss
-round-trip min/avg/max/stddev = 15.964/15.964/15.964/0.000 ms
+round-trip min/avg/max/stddev = 16.530/16.530/16.530/0.000 ms
 PING 198.11.132.250 (198.11.132.250): 56 data bytes
-64 bytes from 198.11.132.250: icmp_seq=0 ttl=51 time=71.388 ms
+64 bytes from 198.11.132.250: icmp_seq=0 ttl=51 time=71.908 ms
 
 --- 198.11.132.250 ping statistics ---
 1 packets transmitted, 1 packets received, 0.0% packet loss
-round-trip min/avg/max/stddev = 71.388/71.388/71.388/0.000 ms
+round-trip min/avg/max/stddev = 71.908/71.908/71.908/0.000 ms
 PING 128.210.224.23 (128.210.224.23): 56 data bytes
-64 bytes from 128.210.224.23: icmp_seq=0 ttl=55 time=20.167 ms
+64 bytes from 128.210.224.23: icmp_seq=0 ttl=55 time=21.225 ms
 
 --- 128.210.224.23 ping statistics ---
 1 packets transmitted, 1 packets received, 0.0% packet loss
-round-trip min/avg/max/stddev = 20.167/20.167/20.167/0.000 ms
+round-trip min/avg/max/stddev = 21.225/21.225/21.225/0.000 ms
 PING 149.165.180.49 (149.165.180.49): 56 data bytes
-64 bytes from 149.165.180.49: icmp_seq=0 ttl=57 time=17.293 ms
+64 bytes from 149.165.180.49: icmp_seq=0 ttl=57 time=18.821 ms
 
 --- 149.165.180.49 ping statistics ---
 1 packets transmitted, 1 packets received, 0.0% packet loss
-round-trip min/avg/max/stddev = 17.293/17.293/17.293/0.000 ms
+round-trip min/avg/max/stddev = 18.821/18.821/18.821/0.000 ms
 PING 23.13.113.150 (23.13.113.150): 56 data bytes
-64 bytes from 23.13.113.150: icmp_seq=0 ttl=54 time=31.234 ms
+64 bytes from 23.13.113.150: icmp_seq=0 ttl=54 time=32.467 ms
 
 --- 23.13.113.150 ping statistics ---
 1 packets transmitted, 1 packets received, 0.0% packet loss
-round-trip min/avg/max/stddev = 31.234/31.234/31.234/0.000 ms
+round-trip min/avg/max/stddev = 32.467/32.467/32.467/0.000 ms
 PING 208.82.238.129 (208.82.238.129): 56 data bytes
-64 bytes from 208.82.238.129: icmp_seq=0 ttl=52 time=62.077 ms
+64 bytes from 208.82.238.129: icmp_seq=0 ttl=52 time=64.716 ms
 
 --- 208.82.238.129 ping statistics ---
 1 packets transmitted, 1 packets received, 0.0% packet loss
-round-trip min/avg/max/stddev = 62.077/62.077/62.077/0.000 ms
+round-trip min/avg/max/stddev = 64.716/64.716/64.716/0.000 ms
 PING 106.48.13.33 (106.48.13.33): 56 data bytes
-64 bytes from 106.48.13.33: icmp_seq=0 ttl=49 time=67.771 ms
+64 bytes from 106.48.13.33: icmp_seq=0 ttl=49 time=67.773 ms
 
 --- 106.48.13.33 ping statistics ---
 1 packets transmitted, 1 packets received, 0.0% packet loss
-round-trip min/avg/max/stddev = 67.771/67.771/67.771/0.000 ms
+round-trip min/avg/max/stddev = 67.773/67.773/67.773/0.000 ms
 PING 103.23.108.200 (103.23.108.200): 56 data bytes
-64 bytes from 103.23.108.200: icmp_seq=0 ttl=236 time=222.308 ms
+64 bytes from 103.23.108.200: icmp_seq=0 ttl=236 time=223.472 ms
 
 --- 103.23.108.200 ping statistics ---
 1 packets transmitted, 1 packets received, 0.0% packet loss
-round-trip min/avg/max/stddev = 222.308/222.308/222.308/0.000 ms
+round-trip min/avg/max/stddev = 223.472/223.472/223.472/0.000 ms
 PING 106.48.14.90 (106.48.14.90): 56 data bytes
-64 bytes from 106.48.14.90: icmp_seq=0 ttl=52 time=27.690 ms
+64 bytes from 106.48.14.90: icmp_seq=0 ttl=52 time=27.859 ms
 
 --- 106.48.14.90 ping statistics ---
 1 packets transmitted, 1 packets received, 0.0% packet loss
-round-trip min/avg/max/stddev = 27.690/27.690/27.690/0.000 ms
+round-trip min/avg/max/stddev = 27.859/27.859/27.859/0.000 ms
 PING 149.165.180.17 (149.165.180.17): 56 data bytes
-64 bytes from 149.165.180.17: icmp_seq=0 ttl=57 time=17.153 ms
+64 bytes from 149.165.180.17: icmp_seq=0 ttl=57 time=18.072 ms
 
 --- 149.165.180.17 ping statistics ---
 1 packets transmitted, 1 packets received, 0.0% packet loss
-round-trip min/avg/max/stddev = 17.153/17.153/17.153/0.000 ms
+round-trip min/avg/max/stddev = 18.072/18.072/18.072/0.000 ms
 PING 216.58.216.201 (216.58.216.201): 56 data bytes
-64 bytes from 216.58.216.201: icmp_seq=0 ttl=56 time=24.497 ms
+64 bytes from 216.58.216.201: icmp_seq=0 ttl=56 time=25.930 ms
 
 --- 216.58.216.201 ping statistics ---
 1 packets transmitted, 1 packets received, 0.0% packet loss
-round-trip min/avg/max/stddev = 24.497/24.497/24.497/0.000 ms
+round-trip min/avg/max/stddev = 25.930/25.930/25.930/0.000 ms
 PING 216.58.192.129 (216.58.192.129): 56 data bytes
-64 bytes from 216.58.192.129: icmp_seq=0 ttl=55 time=24.752 ms
+64 bytes from 216.58.192.129: icmp_seq=0 ttl=55 time=28.440 ms
 
 --- 216.58.192.129 ping statistics ---
 1 packets transmitted, 1 packets received, 0.0% packet loss
-round-trip min/avg/max/stddev = 24.752/24.752/24.752/0.000 ms
+round-trip min/avg/max/stddev = 28.440/28.440/28.440/0.000 ms
 PING 192.229.163.158 (192.229.163.158): 56 data bytes
-64 bytes from 192.229.163.158: icmp_seq=0 ttl=58 time=12.725 ms
+64 bytes from 192.229.163.158: icmp_seq=0 ttl=58 time=13.132 ms
 
 --- 192.229.163.158 ping statistics ---
 1 packets transmitted, 1 packets received, 0.0% packet loss
-round-trip min/avg/max/stddev = 12.725/12.725/12.725/0.000 ms
+round-trip min/avg/max/stddev = 13.132/13.132/13.132/0.000 ms
 PING 149.165.180.34 (149.165.180.34): 56 data bytes
-64 bytes from 149.165.180.34: icmp_seq=0 ttl=57 time=21.499 ms
+64 bytes from 149.165.180.34: icmp_seq=0 ttl=57 time=17.821 ms
 
 --- 149.165.180.34 ping statistics ---
 1 packets transmitted, 1 packets received, 0.0% packet loss
-round-trip min/avg/max/stddev = 21.499/21.499/21.499/0.000 ms
+round-trip min/avg/max/stddev = 17.821/17.821/17.821/0.000 ms
 PING 72.21.91.8 (72.21.91.8): 56 data bytes
-64 bytes from 72.21.91.8: icmp_seq=0 ttl=58 time=12.985 ms
+64 bytes from 72.21.91.8: icmp_seq=0 ttl=58 time=13.356 ms
 
 --- 72.21.91.8 ping statistics ---
 1 packets transmitted, 1 packets received, 0.0% packet loss
-round-trip min/avg/max/stddev = 12.985/12.985/12.985/0.000 ms
+round-trip min/avg/max/stddev = 13.356/13.356/13.356/0.000 ms
 PING 23.13.116.207 (23.13.116.207): 56 data bytes
-64 bytes from 23.13.116.207: icmp_seq=0 ttl=54 time=37.367 ms
+64 bytes from 23.13.116.207: icmp_seq=0 ttl=54 time=32.095 ms
 
 --- 23.13.116.207 ping statistics ---
 1 packets transmitted, 1 packets received, 0.0% packet loss
-round-trip min/avg/max/stddev = 37.367/37.367/37.367/0.000 ms
+round-trip min/avg/max/stddev = 32.095/32.095/32.095/0.000 ms
