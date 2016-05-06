@@ -1,4 +1,4 @@
-# NetworkMonitor
+NetworkMonitor
 ================
 ECE 595 Project
 
@@ -38,18 +38,18 @@ Usage
 You need three process to run the system:
 
 1. data collection process
-'''
+```
 cd /<your path>/netowrk_monitor/src
 ./source
-'''
+```
 
 2. data analysis process
-'''
+```
  /<your spark path>/spark-1.6.1/bin/spark-submit /<your path>/netowrk_monitor/src/network_monitor.py localhost 9999
-'''
+```
 
 3. control process
-'''
+```
 cd /<your path>/netowrk_monitor/src
 ./control
-'''
+```
