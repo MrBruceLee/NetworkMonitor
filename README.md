@@ -35,7 +35,7 @@ top 500 webpage that can be used by this project
 
 RelatedPaper
 ------------
-Useful papers that related to this project
+Useful papers that are related to this project
 
 
 
